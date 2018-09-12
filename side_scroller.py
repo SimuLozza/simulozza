@@ -195,12 +195,12 @@ class Game(object):
             # could be to replace the "print" with the invocation of a simple
             # "game over" scene
             if self.player.is_dead:
-                print 'YOU DIED'
+                print('YOU DIED')
                 return
 
             # terminate this main loop if the player wins
             if self.won:
-                print 'YOU WIN'
+                print('YOU WIN')
                 return
 
 if __name__ == '__main__':

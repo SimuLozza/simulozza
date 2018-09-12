@@ -241,11 +241,11 @@ class Game(object):
             # could be to replace the "print" with the invocation of a simple
             # "game over" scene
             if self.player.is_dead:
-                print 'YOU DIED'
+                print('YOU DIED')
                 return
 
             if self.tilemap.layers['triggers'].collide(self.player.rect, 'exit'):
-                print 'YOU WIN'
+                print('YOU WIN')
                 return
 
 if __name__ == '__main__':

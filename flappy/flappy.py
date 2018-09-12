@@ -104,7 +104,7 @@ def play():
 
         if (pygame.sprite.spritecollide(bird, ground, False) or
                 pygame.sprite.spritecollide(bird, pipes, False)):
-            print 'FAIL at distance', distance
+            print('FAIL at distance', distance)
             return
 
         screen.fill((100, 100, 255))

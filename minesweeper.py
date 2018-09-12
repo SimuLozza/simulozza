@@ -71,7 +71,7 @@ class Game(object):
                     break
                     return
 
-        print 'GAME OVER'
+        print('GAME OVER')
         while True:
             event = pygame.event.poll()
             if event.type == pygame.QUIT:

@@ -33,7 +33,7 @@ IMAGES = {}
 # application bundling used
 DATADIR = 'data/'
 if getattr(sys, '_MEIPASS', None):
-    print 'Running frozen, using _MEIPASS', sys._MEIPASS
+    print('Running frozen, using _MEIPASS', sys._MEIPASS)
     # frozen (pyInstaller style) data files are in a special directory
     DATADIR = os.path.join(sys._MEIPASS, 'data', '')
 
@@ -161,7 +161,7 @@ class Game(object):
         self.dp = dp
         self.action_icon_size = dict(ldpi=18, mdpi=32, hdpi=36,
             xhdpi=48)[density]
-        print 'action_icon_size=%r' % self.action_icon_size
+        print('action_icon_size=%r' % self.action_icon_size)
         self.icon_size = icon_size
         self.columns = []
         self.score = 0
@@ -189,7 +189,7 @@ class Game(object):
         while True:
             self.font = pygame.font.Font(DATADIR + 'Roboto-Regular.ttf', size)
             if self.font.get_linesize() >= target_font_size:
-                print 'font size=%r' % size
+                print('font size=%r' % size)
                 break
             size += 1
         self.small_font = pygame.font.Font(DATADIR + 'Roboto-Regular.ttf',
@@ -208,7 +208,7 @@ class Game(object):
 
     def load_state(self):
         import os
-        print 'attempt to load state from %s' % os.path.abspath(self.save_fn)
+        print('attempt to load state from %s' % os.path.abspath(self.save_fn))
         if not os.path.exists(self.save_fn):
             return
         self.grid_complete_and_settled = True
@@ -244,7 +244,7 @@ class Game(object):
         if platform.system() == 'Windows' and os.path.exists(self.save_fn):
             os.remove(self.save_fn)
         os.rename(self.save_fn + '.new', self.save_fn)
-        print 'STATE SAVED', os.path.abspath(self.save_fn)
+        print('STATE SAVED', os.path.abspath(self.save_fn))
 
     def update(self, dt):
         self.effects_group.update(dt)
@@ -812,8 +812,8 @@ def main():
             break
         icon_size = size
 
-    print 'dimensions=%r; dpi=%r; density=%r; dp=%r; icon_size=%r' % (
-        screen.get_size(), dpi, density, dp, icon_size)
+    print('dimensions=%r; dpi=%r; density=%r; dp=%r; icon_size=%r' % (
+        screen.get_size(), dpi, density, dp, icon_size))
 
     Game(screen, density, dp, icon_size).main()
 

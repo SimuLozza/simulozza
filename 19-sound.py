@@ -137,7 +137,7 @@ class Game(object):
             pygame.display.flip()
 
             if self.player.is_dead:
-                print 'YOU DIED'
+                print('YOU DIED')
                 return
 
 if __name__ == '__main__':
