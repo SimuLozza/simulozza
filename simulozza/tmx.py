@@ -4,6 +4,7 @@
 
 # TODO: support properties on more things
 import base64
+import os
 import sys
 import struct
 import zlib
@@ -61,12 +62,12 @@ class Tileset(object):
         self.properties = {}
 
     @classmethod
-    def fromxml(cls, tag, firstgid=None):
+    def fromxml(cls, tag, firstgid=None, path=''):
         if 'source' in tag.attrib:
             firstgid = int(tag.attrib['firstgid'])
-            with open(tag.attrib['source']) as f:
+            with open(os.path.join(path, tag.attrib['source'])) as f:
                 tileset = ElementTree.fromstring(f.read())
-            return cls.fromxml(tileset, firstgid)
+            return cls.fromxml(tileset, firstgid, path=path)
 
         name = tag.attrib['name']
         if firstgid is None:
@@ -79,14 +80,14 @@ class Tileset(object):
         for c in tag.getchildren():
             if c.tag == "image":
                 # create a tileset
-                tileset.add_image(c.attrib['source'])
+                tileset.add_image(c.attrib['source'], path=path)
             elif c.tag == 'tile':
                 gid = tileset.firstgid + int(c.attrib['id'])
                 tileset.get_tile(gid).loadxml(c)
         return tileset
 
-    def add_image(self, file):
-        image = pygame.image.load(file).convert_alpha()
+    def add_image(self, file, path=''):
+        image = pygame.image.load(os.path.join(path, file)).convert_alpha()
         if not image:
             sys.exit("Error creating new Tileset: file %s not found" % file)
         id = self.firstgid
@@ -677,7 +678,7 @@ class TileMap(object):
         self.tile_width = 0
         self.tile_height = 0
         self.width = 0
-        self.height  = 0
+        self.height = 0
         self.properties = {}
         self.layers = Layers()
         self.tilesets = Tilesets()
@@ -698,29 +699,31 @@ class TileMap(object):
     @classmethod
     def load(cls, filename, viewport):
         with open(filename) as f:
-            map = ElementTree.fromstring(f.read())
+            map_xml = ElementTree.fromstring(f.read())
+
+        file_path = os.path.dirname(filename)
 
         # get most general map informations and create a surface
-        tilemap = TileMap(viewport)
-        tilemap.width = int(map.attrib['width'])
-        tilemap.height  = int(map.attrib['height'])
-        tilemap.tile_width = int(map.attrib['tilewidth'])
-        tilemap.tile_height = int(map.attrib['tileheight'])
-        tilemap.px_width = tilemap.width * tilemap.tile_width
-        tilemap.px_height = tilemap.height * tilemap.tile_height
+        tile_map = TileMap(viewport)
+        tile_map.width = int(map_xml.attrib['width'])
+        tile_map.height  = int(map_xml.attrib['height'])
+        tile_map.tile_width = int(map_xml.attrib['tilewidth'])
+        tile_map.tile_height = int(map_xml.attrib['tileheight'])
+        tile_map.px_width = tile_map.width * tile_map.tile_width
+        tile_map.px_height = tile_map.height * tile_map.tile_height
 
-        for tag in map.findall('tileset'):
-            tilemap.tilesets.add(Tileset.fromxml(tag))
+        for tag in map_xml.findall('tileset'):
+            tile_map.tilesets.add(Tileset.fromxml(tag, path=file_path))
 
-        for tag in map.findall('layer'):
-            layer = Layer.fromxml(tag, tilemap)
-            tilemap.layers.add_named(layer, layer.name)
+        for tag in map_xml.findall('layer'):
+            layer = Layer.fromxml(tag, tile_map)
+            tile_map.layers.add_named(layer, layer.name)
 
-        for tag in map.findall('objectgroup'):
-            layer = ObjectLayer.fromxml(tag, tilemap)
-            tilemap.layers.add_named(layer, layer.name)
+        for tag in map_xml.findall('objectgroup'):
+            layer = ObjectLayer.fromxml(tag, tile_map)
+            tile_map.layers.add_named(layer, layer.name)
 
-        return tilemap
+        return tile_map
 
     _old_focus = None
     def set_focus(self, fx, fy, force=False):

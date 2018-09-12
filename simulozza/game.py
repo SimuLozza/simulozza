@@ -1,7 +1,8 @@
 import pygame
 import kezmenu
 
-from platformer import Game
+from simulozza.level import Level
+from simulozza.data_file import data_file
 
 
 class Menu(object):
@@ -9,9 +10,9 @@ class Menu(object):
 
     def main(self, screen):
         clock = pygame.time.Clock()
-        background = pygame.image.load('background.png')
+        background = pygame.image.load(data_file('background.png'))
         menu = kezmenu.KezMenu(
-            ['Play!', lambda: Game().main(screen)],
+            ['Play!', lambda: Level(screen, data_file('map-enemies.tmx'), data_file('background.png')).run()],
             ['Quit', lambda: setattr(self, 'running', False)],
         )
         menu.x = 200
