@@ -88,4 +88,4 @@ if __name__ == '__main__':
     # run the game
     pygame.init()
     screen = pygame.display.set_mode((640, 480))
-    Level(screen, data_file('map-enemies.tmx'), data_file('background.png')).run()
+    Level(screen, data_file('level-01.tmx'), data_file('background.png')).run()

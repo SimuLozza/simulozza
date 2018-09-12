@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" tiledversion="1.1.6" orientation="orthogonal" renderorder="right-down" width="10" height="5" tilewidth="70" tileheight="70" infinite="0" nextobjectid="11">
+ <tileset firstgid="1" source="kenney_complete_base_tiles_spritesheet.tsx"/>
+ <layer name="Tile Layer 2" width="10" height="5">
+  <data encoding="base64" compression="zlib">
+   eJxjYBh4oEkFMwALrAAq
+  </data>
+ </layer>
+ <layer name="Tile Layer 1" width="10" height="5">
+  <data encoding="base64" compression="zlib">
+   eJxjYKAuaIXSbljk9JDUwNQFYVFnhaSuBIgzCOAYIAYAWE8HJQ==
+  </data>
+ </layer>
+ <objectgroup name="triggers" visible="0">
+  <object id="1" name="player" x="140" y="210" width="70" height="70">
+   <properties>
+    <property name="player" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="2" name="exit" x="490" y="210" width="70" height="70">
+   <properties>
+    <property name="exit" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="5" x="0" y="280" width="700" height="70">
+   <properties>
+    <property name="blockers" value="blrt"/>
+   </properties>
+  </object>
+  <object id="9" x="0" y="140" width="70" height="140">
+   <properties>
+    <property name="blockers" value="blrt"/>
+   </properties>
+  </object>
+  <object id="10" x="630" y="140" width="70" height="140">
+   <properties>
+    <property name="blockers" value="blrt"/>
+   </properties>
+  </object>
+ </objectgroup>
+</map>

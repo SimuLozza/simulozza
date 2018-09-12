@@ -53,10 +53,12 @@ class Tile(object):
 
 
 class Tileset(object):
-    def __init__(self, name, tile_width, tile_height, firstgid):
+    def __init__(self, name, tile_width, tile_height, spacing, columns, firstgid):
         self.name = name
         self.tile_width = tile_width
         self.tile_height = tile_height
+        self.columns = columns
+        self.spacing = spacing
         self.firstgid = firstgid
         self.tiles = []
         self.properties = {}
@@ -74,8 +76,12 @@ class Tileset(object):
             firstgid = int(tag.attrib['firstgid'])
         tile_width = int(tag.attrib['tilewidth'])
         tile_height = int(tag.attrib['tileheight'])
+        columns = None
+        if 'columns' in tag.attrib:
+            columns = int(tag.attrib['columns'])
+        spacing = int(tag.get('spacing', 0))
 
-        tileset = cls(name, tile_width, tile_height, firstgid)
+        tileset = cls(name, tile_width, tile_height, spacing, columns, firstgid)
 
         for c in tag.getchildren():
             if c.tag == "image":
@@ -91,10 +97,15 @@ class Tileset(object):
         if not image:
             sys.exit("Error creating new Tileset: file %s not found" % file)
         id = self.firstgid
-        for line in range(image.get_height() // self.tile_height):
-            for column in range(image.get_width() // self.tile_width):
-                pos = Rect(column * self.tile_width, line * self.tile_height,
-                    self.tile_width, self.tile_height)
+        if self.columns is None:
+            columns = image.get_width() // (self.tile_width + self.spacing)
+        else:
+            columns = self.columns
+        for line in range(image.get_height() // (self.tile_height + self.spacing)):
+            for column in range(columns):
+                pos = Rect(column * (self.tile_width + self.spacing),
+                           line * (self.tile_height + self.spacing),
+                           self.tile_width, self.tile_height)
                 self.tiles.append(Tile(id, image.subsurface(pos), self))
                 id += 1
 

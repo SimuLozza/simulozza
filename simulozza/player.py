@@ -7,10 +7,10 @@ from simulozza.objects import Bullet
 class Player(pygame.sprite.Sprite):
     def __init__(self, location, *groups):
         super().__init__(*groups)
-        self.image = pygame.image.load(data_file('player-right.png'))
-        self.right_image = self.image
-        self.left_image = pygame.image.load(data_file('player-left.png'))
-        self.rect = pygame.rect.Rect(location, self.image.get_size())
+        self.image = self.stand_image = pygame.image.load(data_file('female_stand.png'))
+        self.walk_image = pygame.image.load(data_file('female_walk1.png'))
+        self.rect = pygame.rect.Rect((0,0), self.image.get_size())
+        self.rect.bottomleft = location
         # is the player resting on a surface and able to jump?
         self.resting = False
         # player's velocity in the Y direction
@@ -29,14 +29,24 @@ class Player(pygame.sprite.Sprite):
 
         # handle the player movement left/right keys
         key = pygame.key.get_pressed()
+        move = 0
         if key[pygame.K_LEFT]:
-            self.rect.x -= 300 * dt
-            self.image = self.left_image
-            self.direction = -1
+            move = -300 * dt
         if key[pygame.K_RIGHT]:
-            self.rect.x += 300 * dt
-            self.image = self.right_image
-            self.direction = 1
+            move += 300 * dt
+
+        if move > 0:
+           self.rect.x += move
+           self.image = self.walk_image
+           self.direction = 1
+        elif move < 0:
+            self.rect.x += move
+            self.image = pygame.transform.flip(self.walk_image, True, False)
+            self.direction = -1
+        elif self.direction > 0:
+            self.image = self.stand_image
+        else:
+            self.image =  pygame.transform.flip(self.stand_image, True, False)
 
         # handle the player shooting key
         if key[pygame.K_LSHIFT] and not self.gun_cooldown:
