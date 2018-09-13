@@ -11,6 +11,7 @@ from simulozza import tmx
 from simulozza.data_file import data_file
 from simulozza.npc import Enemy
 from simulozza.player import Player
+from simulozza.cloud import Cloud
 
 
 class Level(object):
@@ -35,10 +36,16 @@ class Level(object):
 
         # add a separate layer for enemies so we can find them more easily later
         self.enemies = tmx.SpriteLayer()
+        self.clouds = tmx.SpriteLayer()
+        self.lightning = tmx.SpriteLayer()
         self.tilemap.layers.append(self.enemies)
+
         # add an enemy for each "enemy" trigger in the map
         for enemy in self.tilemap.layers['triggers'].find('enemy'):
             Enemy((enemy.px, enemy.py), self.enemies)
+        # add an enemy for each "enemy" trigger in the map
+        for cloud in self.tilemap.layers['triggers'].find('cloud'):
+            Cloud((cloud.px, cloud.py), self.sprites)
 
         # load the sound effects used in playing a level of the game
         self.jump = pygame.mixer.Sound(data_file('jump.wav'))
