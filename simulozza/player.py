@@ -114,5 +114,13 @@ class Player(pygame.sprite.Sprite):
         for cell in game.tilemap.layers['triggers'].collide(new, 'spikes'):
             self.is_dead = True
 
+            for teleporter in game.tilemap.layers['triggers'].collide(new, 'teleport'):
+                if teleporter['teleport_exit'] == 'true':
+                    continue
+                for target in game.tilemap.layers['triggers'].match (teleport=teleporter['teleport'],
+                                                                     teleport_exit='true'):
+                     new.bottom = target.bottom
+                     new.left = target.left
+
         # re-focus the tilemap viewport on the player's new position
         game.tilemap.set_focus(new.x, new.y)

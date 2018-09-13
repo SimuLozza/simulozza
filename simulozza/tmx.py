@@ -407,6 +407,7 @@ visible: Whether the object is shown (1) or hidden (0). Defaults to 1.
         self.right = x + width
         self.height = height
         self.bottom = y + height
+        self.bottomleft = (self.left, self.bottom)
         self.name = name
         self.gid = gid
         self.tile = tile
