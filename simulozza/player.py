@@ -2,14 +2,19 @@ import pygame
 
 from simulozza.data_file import data_file
 from simulozza.objects import Bullet
-
+image_location = {
+    "stand": (0, 0, 80, 110),
+    "walk 1": (0, 110, 80, 110),
+    "walk 2": (80, 110, 80, 110),
+    "climb 1": (400, 0, 80, 110),
+    "climb 2": (480, 0, 80, 110),
+}
 
 class Player(pygame.sprite.Sprite):
     def __init__(self, location, *groups):
         super().__init__(*groups)
         self.sheet = pygame.image.load(data_file('kenney_female_tilesheet.png'))
-        self.image = self.stand_image = self.sheet.subsurface((0, 0, 80, 110))
-        self.walk_image = self.sheet.subsurface((80, 110, 80, 110))
+        self.set_image("stand")
         self.rect = pygame.rect.Rect((0, 0), self.image.get_size())
         self.player_shrunk = False
         self.player_expanded = False
@@ -28,6 +33,8 @@ class Player(pygame.sprite.Sprite):
         self.gun_cooldown = 0
         self.jump_cooldown = 0
         self.on_ladder = False
+        self.animate_time = 0
+        self.animate_frame = ''
 
     @property
     def collide_rect(self):
@@ -40,7 +47,23 @@ class Player(pygame.sprite.Sprite):
         r.midbottom = self.rect.midbottom
         return r
 
+    def set_image(self, image_name, flip=False):
+        location = image_location[image_name]
+        image = self.sheet.subsurface(location)
+        if flip:
+            image = pygame.transform.flip(image, True, False)
+        self.image = image
+
+    def animate(self, frame1, frame2, frame_time, flip=False):
+        if self.animate_time > frame_time*2:
+            self.animate_time = 0
+        if  self.animate_time < frame_time:
+            self.set_image(frame1, flip)
+        else:
+            self.set_image(frame2, flip)
+
     def update(self, dt, game):
+        self.animate_time += dt
         # take a copy of the current position of the player before movement for
         # use in movement collision response
         last = self.collide_rect
@@ -58,17 +81,17 @@ class Player(pygame.sprite.Sprite):
             move += 300 * dt
 
         if move > 0:
-           self.rect.x += move
-           self.image = self.walk_image
-           self.direction = 1
+            self.rect.x += move
+            self.animate("walk 1", "walk 2", .20)
+            self.direction = 1
         elif move < 0:
             self.rect.x += move
-            self.image = pygame.transform.flip(self.walk_image, True, False)
+            self.animate("walk 1", "walk 2", .20, flip=True)
             self.direction = -1
         elif self.direction > 0:
-            self.image = self.stand_image
+            self.set_image("stand")
         else:
-            self.image = pygame.transform.flip(self.stand_image, True, False)
+            self.set_image("stand", flip=True)
 
         # handle the player shooting key
         if key[pygame.K_LSHIFT] and not self.gun_cooldown:
@@ -106,10 +129,11 @@ class Player(pygame.sprite.Sprite):
 
         if on_ladder:
             if key[pygame.K_UP]:
-                # TODO change to climb image
-                self.image = self.walk_image
+                self.animate('climb 1', 'climb 2', .20)
                 self.dy = -200
+                # def animate(frame1, frame2, frame_time):
             elif key[pygame.K_DOWN]:
+                self.animate('climb 1', 'climb 2', .30)
                 self.dy = +200
             else:
                 self.dy = 0
