@@ -13,11 +13,11 @@ image_location = {
 class Player(pygame.sprite.Sprite):
     def __init__(self, location, *groups):
         super().__init__(*groups)
+        self.player_shrunk = False
+        self.rect = None
         self.sheet = pygame.image.load(data_file('kenney_female_tilesheet.png'))
         self.set_image("stand")
         self.rect = pygame.rect.Rect((0, 0), self.image.get_size())
-        self.player_shrunk = False
-        self.player_expanded = False
         self.rect.bottomleft = location
         # is the player resting on a surface and able to jump?
         self.resting = False
@@ -52,6 +52,10 @@ class Player(pygame.sprite.Sprite):
         image = self.sheet.subsurface(location)
         if flip:
             image = pygame.transform.flip(image, True, False)
+        if self.player_shrunk:
+            image = pygame.transform.scale(image, (30, 30))
+        if self.rect is not None:
+            self.rect.size = image.get_size()
         self.image = image
 
     def animate(self, frame1, frame2, frame_time, flip=False):
@@ -193,18 +197,8 @@ class Player(pygame.sprite.Sprite):
         for cell in game.tilemap.layers['triggers'].collide(new, 'shrink'):
             self.player_shrunk = True
 
-        if self.player_shrunk:
-            self.image = pygame.transform.scale(self.image, (30, 30))
-            self.rect.size = self.image.get_size()
-
         for cell in game.tilemap.layers['triggers'].collide(new, 'expand'):
-            self.player_expanded = True
-
-        if self.player_expanded:
-            pygame.image.load(data_file('kenney_female_tilesheet.png'))
-            self.image = self.stand_image = self.sheet.subsurface((0, 0, 80, 110))
-            # self.image = pygame.transform.scale(self.image, (70, 70))
-            self.rect.size = self.image.get_size()
+            self.player_shrunk = False
 
         # this reassignment of the image rect must be here at the bottom
         self.rect.midbottom = new.midbottom
