@@ -86,6 +86,7 @@ class Level(object):
 if __name__ == '__main__':
     # if we're invoked as a program then initialise pygame, create a window and
     # run the game
+    import sys
     pygame.init()
     screen = pygame.display.set_mode((640, 480))
-    Level(screen, data_file('level-01.tmx'), data_file('background.png')).run()
+    Level(screen, data_file(sys.argv[1]), data_file('background.png')).run()
