@@ -21,11 +21,16 @@ class Player(pygame.sprite.Sprite):
         self.direction = 1
         # time since the player last shot
         self.gun_cooldown = 0
+        self.on_ladder = False
 
     def update(self, dt, game):
         # take a copy of the current position of the player before movement for
         # use in movement collision response
         last = self.rect.copy()
+
+        on_ladder = False
+        for cell in game.tilemap.layers['triggers'].collide(last, 'ladder'):
+            on_ladder = True
 
         # handle the player movement left/right keys
         key = pygame.key.get_pressed()
@@ -73,14 +78,25 @@ class Player(pygame.sprite.Sprite):
             # up (positive Y is down the screen)
             self.dy = -500
 
-        # add gravity on to the currect vertical speed
-        self.dy = min(400, self.dy + 40)
+        if on_ladder:
+            if key[pygame.K_UP]:
+                # TODO change to climb image
+                self.image = self.walk_image
+                self.dy = -200
+            elif key[pygame.K_DOWN]:
+                self.dy = +200
+            else:
+                self.dy = 0
+        else:
+            # add gravity on to the currect vertical speed
+            self.dy = min(400, self.dy + 40)
 
         # now add the distance travelled for this update to the player position
         self.rect.y += self.dy * dt
 
         # collide the player with the map's blockers
         new = self.rect
+
         # reset the resting trigger; if we are at rest it'll be set again in the
         # loop; this prevents the player from being able to jump if they walk
         # off the edge of a platform
@@ -107,6 +123,9 @@ class Player(pygame.sprite.Sprite):
             if 'b' in blockers and last.top >= cell.bottom and new.top < cell.bottom:
                 new.top = cell.bottom
                 self.dy = 0
+
+
+
 
         # re-focus the tilemap viewport on the player's new position
         game.tilemap.set_focus(new.x, new.y)
