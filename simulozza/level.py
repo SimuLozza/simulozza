@@ -78,7 +78,7 @@ class Level(object):
 
             # construct the scene by drawing the background and then the rest of
             # the game imagery over the top
-            self.screen.blit(self.background, (0, 0))
+            self.screen.fill((0, 0, 0))
             self.tilemap.draw(self.screen)
             self.gui.draw(self.screen)
 
@@ -102,5 +102,5 @@ if __name__ == '__main__':
     # run the game
     import sys
     pygame.init()
-    screen = pygame.display.set_mode((640, 480))
+    screen = pygame.display.set_mode((1280, 760))  # , pygame.FULLSCREEN)
     Level(screen, data_file(sys.argv[1]), data_file('background.png')).run()
