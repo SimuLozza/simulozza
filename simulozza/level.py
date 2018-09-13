@@ -93,6 +93,8 @@ class Level(object):
                 self.level_complete = True
                 x, y = self.screen.get_size()
                 text_to_screen(self.screen, 'Well done!', x//2, y//2, align='center')
+                return
+
 
             pygame.display.flip()
 
