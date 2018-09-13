@@ -32,4 +32,4 @@ class Enemy(pygame.sprite.Sprite):
         # player to indicate game over (a health level could be decremented here
         # instead)
         if self.rect.colliderect(game.player.collide_rect):
-            game.player.is_dead = True
+            game.player.hurt()

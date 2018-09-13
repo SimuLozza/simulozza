@@ -1,5 +1,6 @@
 import pygame
 
+from simulozza.color_surface import color_surface
 from simulozza.data_file import data_file
 from simulozza.objects import Bullet
 image_location = {
@@ -15,6 +16,7 @@ class Player(pygame.sprite.Sprite):
         super().__init__(*groups)
         self.player_shrunk = False
         self.rect = None
+        self.set_color = False
         self.sheet = pygame.image.load(data_file('kenney_female_tilesheet.png'))
         self.set_image("stand")
         self.rect = pygame.rect.Rect((0, 0), self.image.get_size())
@@ -25,8 +27,6 @@ class Player(pygame.sprite.Sprite):
         self.exhausted = False
         # player's velocity in the Y direction
         self.dy = 0
-        # is the player dead?
-        self.is_dead = False
         # movement in the X direction; postive is right, negative is left
         self.direction = 1
         # time since the player last shot
@@ -35,6 +35,19 @@ class Player(pygame.sprite.Sprite):
         self.on_ladder = False
         self.animate_time = 0
         self.animate_frame = ''
+
+        # is the player dead?
+        self.is_dead = False
+        self.lives = 3
+        self.hurt_cooldown = 0
+
+    def hurt(self):
+        if self.hurt_cooldown > 0:
+            return
+        self.lives -= 1
+        self.hurt_cooldown = 1
+        if self.lives <= 0:
+            self.is_dead = True
 
     @property
     def collide_rect(self):
@@ -50,6 +63,8 @@ class Player(pygame.sprite.Sprite):
     def set_image(self, image_name, flip=False):
         location = image_location[image_name]
         image = self.sheet.subsurface(location)
+        if self.set_color:
+            image = color_surface(image, self.set_color)
         if flip:
             image = pygame.transform.flip(image, True, False)
         if self.player_shrunk:
@@ -61,7 +76,7 @@ class Player(pygame.sprite.Sprite):
     def animate(self, frame1, frame2, frame_time, flip=False):
         if self.animate_time > frame_time*2:
             self.animate_time = 0
-        if  self.animate_time < frame_time:
+        if self.animate_time < frame_time:
             self.set_image(frame1, flip)
         else:
             self.set_image(frame2, flip)
@@ -112,7 +127,13 @@ class Player(pygame.sprite.Sprite):
         # decrement the time since the player last shot to a minimum of 0 (so
         # boolean checks work)
         self.gun_cooldown = max(0, self.gun_cooldown - dt)
+        self.hurt_cooldown = max(0, self.hurt_cooldown - dt)
         self.jump_cooldown = max(0, self.jump_cooldown - dt)
+
+        self.set_color = None
+        if self.hurt_cooldown > 0:
+            if (self.hurt_cooldown % 0.25) > 0.125:
+                self.set_color = (255, 255, 255)
 
         # if the player's allowed to let them jump with the spacebar; note that
         # wall-jumping could be allowed with an additional "touching a wall"
@@ -181,10 +202,10 @@ class Player(pygame.sprite.Sprite):
                 self.dy = 0
 
         for cell in game.tilemap.layers['triggers'].collide(new, 'lava'):
-            self.is_dead = True
+            self.hurt()
 
         for cell in game.tilemap.layers['triggers'].collide(new, 'spikes'):
-            self.is_dead = True
+            self.hurt()
 
         for teleporter in game.tilemap.layers['triggers'].collide(new, 'teleport'):
             if teleporter['teleport_exit'] == 'true':
