@@ -7,8 +7,9 @@ from simulozza.objects import Bullet
 class Player(pygame.sprite.Sprite):
     def __init__(self, location, *groups):
         super().__init__(*groups)
-        self.image = self.stand_image = pygame.image.load(data_file('female_stand.png'))
-        self.walk_image = pygame.image.load(data_file('female_walk1.png'))
+        self.sheet = pygame.image.load(data_file('kenney_female_tilesheet.png'))
+        self.image = self.stand_image = self.sheet.subsurface((0, 0, 80, 110))
+        self.walk_image = self.sheet.subsurface((80, 110, 80, 110))
         self.rect = pygame.rect.Rect((0, 0), self.image.get_size())
         self.rect.bottomleft = location
         # is the player resting on a surface and able to jump?
