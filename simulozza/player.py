@@ -129,8 +129,6 @@ class Player(pygame.sprite.Sprite):
                  new.bottom = target.bottom
                  new.left = target.left
 
-        self.rect.midbottom = new.midbottom
-
         for teleporter in game.tilemap.layers['triggers'].collide(new, 'teleport'):
             if teleporter['teleport_exit'] == 'true':
                 continue
@@ -138,6 +136,8 @@ class Player(pygame.sprite.Sprite):
                                                                  teleport_exit='true'):
                  new.bottom = target.bottom
                  new.left = target.left
+
+        self.rect.midbottom = new.midbottom
 
         # re-focus the tilemap viewport on the player's new position
         game.tilemap.set_focus(new.x, new.y)
