@@ -38,7 +38,7 @@
     <property name="blockers" value="blrt"/>
    </properties>
   </object>
-  <object id="12" x="280" y="280" width="210" height="70">
+  <object id="12" x="280" y="313" width="210" height="37">
    <properties>
     <property name="lava" type="bool" value="true"/>
    </properties>

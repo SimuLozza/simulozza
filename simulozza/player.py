@@ -108,6 +108,9 @@ class Player(pygame.sprite.Sprite):
                 new.top = cell.bottom
                 self.dy = 0
 
+        for cell in game.tilemap.layers['triggers'].collide(new, 'lava'):
+            self.is_dead = True
+
         for cell in game.tilemap.layers['triggers'].collide(new, 'spikes'):
             self.is_dead = True
 
