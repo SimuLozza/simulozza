@@ -3,7 +3,6 @@ import pygame
 from simulozza.data_file import data_file
 from simulozza.objects import Bullet
 
-
 class Player(pygame.sprite.Sprite):
     def __init__(self, location, *groups):
         super().__init__(*groups)
@@ -11,6 +10,8 @@ class Player(pygame.sprite.Sprite):
         self.image = self.stand_image = self.sheet.subsurface((0, 0, 80, 110))
         self.walk_image = self.sheet.subsurface((80, 110, 80, 110))
         self.rect = pygame.rect.Rect((0, 0), self.image.get_size())
+        self.player_shrunk = False
+        self.player_expanded = False
         self.rect.bottomleft = location
         # is the player resting on a surface and able to jump?
         self.resting = False
@@ -26,8 +27,12 @@ class Player(pygame.sprite.Sprite):
 
     @property
     def collide_rect(self):
-        w, h = self.image.get_size()
-        r = pygame.rect.Rect((0, 0), (w - 30, h))
+        w, h = self.rect.size
+        if self.player_shrunk:
+            w -= 10
+        else:
+            w -= 30
+        r = pygame.rect.Rect((0, 0), (w, h))
         r.midbottom = self.rect.midbottom
         return r
 
@@ -146,15 +151,24 @@ class Player(pygame.sprite.Sprite):
                  new.bottom = target.bottom
                  new.left = target.left
 
-        for teleporter in game.tilemap.layers['triggers'].collide(new, 'teleport'):
-            if teleporter['teleport_exit'] == 'true':
-                continue
-            for target in game.tilemap.layers['triggers'].match (teleport=teleporter['teleport'],
-                                                                 teleport_exit='true'):
-                 new.bottom = target.bottom
-                 new.left = target.left
+        for cell in game.tilemap.layers['triggers'].collide(new, 'shrink'):
+            self.player_shrunk = True
 
+        if self.player_shrunk:
+            self.image = pygame.transform.scale(self.image, (30, 30))
+            self.rect.size = self.image.get_size()
+
+        for cell in game.tilemap.layers['triggers'].collide(new, 'expand'):
+            self.player_expanded = True
+
+        if self.player_expanded:
+            pygame.image.load(data_file('kenney_female_tilesheet.png'))
+            self.image = self.stand_image = self.sheet.subsurface((0, 0, 80, 110))
+            # self.image = pygame.transform.scale(self.image, (70, 70))
+            self.rect.size = self.image.get_size()
+
+        # this reassignment of the image rect must be here at the bottom
         self.rect.midbottom = new.midbottom
 
-        # re-focus the tilemap viewport on the player's new position
+        # re-focus the tilemap  viewport on the player's new position
         game.tilemap.set_focus(new.x, new.y)
