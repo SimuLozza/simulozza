@@ -31,5 +31,5 @@ class Enemy(pygame.sprite.Sprite):
         # check for collision with the player; on collision mark the flag on the
         # player to indicate game over (a health level could be decremented here
         # instead)
-        if self.rect.colliderect(game.player.rect):
+        if self.rect.colliderect(game.player.collide_rect):
             game.player.is_dead = True

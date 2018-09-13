@@ -7,9 +7,10 @@ from simulozza.objects import Bullet
 class Player(pygame.sprite.Sprite):
     def __init__(self, location, *groups):
         super().__init__(*groups)
-        self.image = self.stand_image = pygame.image.load(data_file('female_stand.png'))
-        self.walk_image = pygame.image.load(data_file('female_walk1.png'))
-        self.rect = pygame.rect.Rect((0,0), self.image.get_size())
+        self.sheet = pygame.image.load(data_file('kenney_female_tilesheet.png'))
+        self.image = self.stand_image = self.sheet.subsurface((0, 0, 80, 110))
+        self.walk_image = self.sheet.subsurface((80, 110, 80, 110))
+        self.rect = pygame.rect.Rect((0, 0), self.image.get_size())
         self.rect.bottomleft = location
         # is the player resting on a surface and able to jump?
         self.resting = False
@@ -21,11 +22,23 @@ class Player(pygame.sprite.Sprite):
         self.direction = 1
         # time since the player last shot
         self.gun_cooldown = 0
+        self.on_ladder = False
+
+    @property
+    def collide_rect(self):
+        w, h = self.image.get_size()
+        r = pygame.rect.Rect((0, 0), (w - 30, h))
+        r.midbottom = self.rect.midbottom
+        return r
 
     def update(self, dt, game):
         # take a copy of the current position of the player before movement for
         # use in movement collision response
-        last = self.rect.copy()
+        last = self.collide_rect
+
+        on_ladder = False
+        for cell in game.tilemap.layers['triggers'].collide(last, 'ladder'):
+            on_ladder = True
 
         # handle the player movement left/right keys
         key = pygame.key.get_pressed()
@@ -46,7 +59,7 @@ class Player(pygame.sprite.Sprite):
         elif self.direction > 0:
             self.image = self.stand_image
         else:
-            self.image =  pygame.transform.flip(self.stand_image, True, False)
+            self.image = pygame.transform.flip(self.stand_image, True, False)
 
         # handle the player shooting key
         if key[pygame.K_LSHIFT] and not self.gun_cooldown:
@@ -73,14 +86,25 @@ class Player(pygame.sprite.Sprite):
             # up (positive Y is down the screen)
             self.dy = -500
 
-        # add gravity on to the currect vertical speed
-        self.dy = min(400, self.dy + 40)
+        if on_ladder:
+            if key[pygame.K_UP]:
+                # TODO change to climb image
+                self.image = self.walk_image
+                self.dy = -200
+            elif key[pygame.K_DOWN]:
+                self.dy = +200
+            else:
+                self.dy = 0
+        else:
+            # add gravity on to the currect vertical speed
+            self.dy = min(400, self.dy + 40)
 
         # now add the distance travelled for this update to the player position
         self.rect.y += self.dy * dt
 
         # collide the player with the map's blockers
-        new = self.rect
+        new = self.collide_rect
+
         # reset the resting trigger; if we are at rest it'll be set again in the
         # loop; this prevents the player from being able to jump if they walk
         # off the edge of a platform
@@ -116,11 +140,13 @@ class Player(pygame.sprite.Sprite):
 
         for teleporter in game.tilemap.layers['triggers'].collide(new, 'teleport'):
             if teleporter['teleport_exit'] == 'true':
-                    continue
+                continue
             for target in game.tilemap.layers['triggers'].match (teleport=teleporter['teleport'],
-                                                                     teleport_exit='true'):
-                     new.bottom = target.bottom
-                     new.left = target.left
+                                                                 teleport_exit='true'):
+                 new.bottom = target.bottom
+                 new.left = target.left
+
+        self.rect.midbottom = new.midbottom
 
         # re-focus the tilemap viewport on the player's new position
         game.tilemap.set_focus(new.x, new.y)
