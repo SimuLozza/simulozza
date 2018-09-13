@@ -14,6 +14,8 @@ class Player(pygame.sprite.Sprite):
         self.rect.bottomleft = location
         # is the player resting on a surface and able to jump?
         self.resting = False
+        self.mid_air = False
+        self.exhausted = False
         # player's velocity in the Y direction
         self.dy = 0
         # is the player dead?
@@ -22,6 +24,7 @@ class Player(pygame.sprite.Sprite):
         self.direction = 1
         # time since the player last shot
         self.gun_cooldown = 0
+        self.jump_cooldown = 0
         self.on_ladder = False
 
     @property
@@ -76,6 +79,7 @@ class Player(pygame.sprite.Sprite):
         # decrement the time since the player last shot to a minimum of 0 (so
         # boolean checks work)
         self.gun_cooldown = max(0, self.gun_cooldown - dt)
+        self.jump_cooldown = max(0, self.jump_cooldown - dt)
 
         # if the player's allowed to let them jump with the spacebar; note that
         # wall-jumping could be allowed with an additional "touching a wall"
@@ -85,6 +89,14 @@ class Player(pygame.sprite.Sprite):
             # we jump by setting the player's velocity to something large going
             # up (positive Y is down the screen)
             self.dy = -500
+            self.mid_air = True
+            self.jump_cooldown = 0.5
+
+        elif self.mid_air and key[pygame.K_SPACE] and not self.exhausted and not self.jump_cooldown:
+            game.jump.play()
+            self.dy = -500
+            self.exhausted = True
+            self.jump_cooldown = 0.5
 
         if on_ladder:
             if key[pygame.K_UP]:
@@ -123,6 +135,8 @@ class Player(pygame.sprite.Sprite):
                 new.left = cell.right
             if 't' in blockers and last.bottom <= cell.top and new.bottom > cell.top:
                 self.resting = True
+                self.mid_air = False
+                self.exhausted = False
                 new.bottom = cell.top
                 # reset the vertical speed if we land or hit the roof; this
                 # avoids strange additional vertical speed if there's a
