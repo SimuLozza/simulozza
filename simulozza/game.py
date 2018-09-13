@@ -12,7 +12,7 @@ class Menu(object):
         clock = pygame.time.Clock()
         background = pygame.image.load(data_file('background.png'))
         menu = kezmenu.KezMenu(
-            ['Play!', lambda: Level(screen, data_file('map-enemies.tmx'), data_file('background.png')).run()],
+            ['Play!', lambda: Level(screen, data_file('level-01.tmx'), data_file('background.png')).run()],
             ['Quit', lambda: setattr(self, 'running', False)],
         )
         menu.x = 200
