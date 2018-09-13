@@ -43,7 +43,7 @@ class Level(object):
         self.tilemap.layers.append(self.enemies)
         # add an enemy for each "enemy" trigger in the map
         for enemy in self.tilemap.layers['triggers'].find('enemy'):
-            Enemy((enemy.px, enemy.py), self.enemies)
+            Enemy(enemy.bottomleft, self.enemies)
 
         # load the sound effects used in playing a level of the game
         self.jump = pygame.mixer.Sound(data_file('jump.wav'))
