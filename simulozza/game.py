@@ -8,11 +8,18 @@ from simulozza.data_file import data_file
 class Menu(object):
     running = True
 
+    def rungame(self):
+        level_list = ['level-01.tmx', 'level-02.tmx', 'level-03.tmx']
+        for i in level_list:
+            Level(self.screen, data_file(i), data_file('background.png')).run()
+        return
+
     def main(self, screen):
         clock = pygame.time.Clock()
+        self.screen = screen
         background = pygame.image.load(data_file('background.png'))
         menu = kezmenu.KezMenu(
-            ['Play!', lambda: Level(screen, data_file('level-01.tmx'), data_file('background.png')).run()],
+            ['Play!', self.rungame],
             ['Quit', lambda: setattr(self, 'running', False)],
         )
         menu.x = 200
@@ -24,6 +31,11 @@ class Menu(object):
             screen.blit(background, (0, 0))
             menu.draw(screen)
             pygame.display.flip()
+
+
+
+
+
 
 
 if __name__ == '__main__':

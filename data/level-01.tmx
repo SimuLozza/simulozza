@@ -1,28 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.1.6" orientation="orthogonal" renderorder="right-down" width="10" height="5" tilewidth="70" tileheight="70" infinite="0" nextobjectid="11">
+<map version="1.0" tiledversion="1.1.6" orientation="orthogonal" renderorder="right-down" width="20" height="5" tilewidth="70" tileheight="70" infinite="0" nextobjectid="17">
  <tileset firstgid="1" source="kenney_complete_base_tiles_spritesheet.tsx"/>
- <layer name="Tile Layer 2" width="10" height="5">
+ <tileset firstgid="157" source="kenney_platformerPack_industrial_tilesheet.tsx"/>
+ <layer name="Tile Layer 2" width="20" height="5">
   <data encoding="base64" compression="zlib">
-   eJxjYBh4oEkFMwALrAAq
+   eJxTYWBgUKEithjheDYSJkc/AFUtFXo=
   </data>
  </layer>
- <layer name="Tile Layer 1" width="10" height="5">
+ <layer name="Tile Layer 1" width="20" height="5">
   <data encoding="base64" compression="zlib">
-   eJxjYKAuaIXSbljk9JDUwNQFYVFnhaSuBIgzCOAYIAYAWE8HJQ==
+   eJxjYBjcoBWI3fDI60HVkGJeEB55KxLNKwHiDCiOAeJuJIwsRywGAKGxC6o=
   </data>
  </layer>
  <objectgroup name="triggers" visible="0">
-  <object id="1" name="player" x="140" y="210" width="70" height="70">
+  <object id="1" name="player" x="70" y="210" width="70" height="70">
    <properties>
     <property name="player" type="bool" value="true"/>
    </properties>
   </object>
-  <object id="2" name="exit" x="490" y="210" width="70" height="70">
+  <object id="2" name="exit" x="560" y="210" width="70" height="70">
    <properties>
     <property name="exit" type="bool" value="true"/>
    </properties>
   </object>
-  <object id="5" x="0" y="280" width="700" height="70">
+  <object id="5" x="0" y="280" width="280" height="70">
    <properties>
     <property name="blockers" value="blrt"/>
    </properties>
@@ -33,6 +34,21 @@
    </properties>
   </object>
   <object id="10" x="630" y="140" width="70" height="140">
+   <properties>
+    <property name="blockers" value="blrt"/>
+   </properties>
+  </object>
+  <object id="11" x="210" y="350" width="350" height="70">
+   <properties>
+    <property name="blockers" value="blrt"/>
+   </properties>
+  </object>
+  <object id="12" x="280" y="313" width="210" height="37">
+   <properties>
+    <property name="lava" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="15" x="490" y="280" width="210" height="70">
    <properties>
     <property name="blockers" value="blrt"/>
    </properties>
