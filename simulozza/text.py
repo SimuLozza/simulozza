@@ -4,7 +4,7 @@ from simulozza.data_file import data_file
 
 
 def text_to_screen(surface, text, x, y, size=50, color=(255, 255, 255), align='left',
-                   font_type=data_file('MODENINE.TTF')):
+                   font_type=data_file('VT220-mod.ttf')):
     font = pygame.font.Font(font_type, size)
     text = font.render(text, True, color)
     if align == 'center':

@@ -68,6 +68,7 @@ class Level(object):
                     return
                 if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
                     return
+                self.player.handle_event(self, event)
 
             if not (self.player.is_dead or self.level_complete):
                 # update the tilemap and everything in it passing the elapsed time
