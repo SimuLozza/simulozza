@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.1.6" orientation="orthogonal" renderorder="right-down" width="20" height="5" tilewidth="70" tileheight="70" infinite="0" nextobjectid="17">
+<map version="1.0" tiledversion="1.1.6" orientation="orthogonal" renderorder="right-down" width="10" height="5" tilewidth="70" tileheight="70" infinite="0" nextobjectid="17">
  <tileset firstgid="1" source="kenney_complete_base_tiles_spritesheet.tsx"/>
  <tileset firstgid="157" source="kenney_platformerPack_industrial_tilesheet.tsx"/>
- <layer name="Tile Layer 2" width="20" height="5">
+ <layer name="Tile Layer 2" width="10" height="5">
   <data encoding="base64" compression="zlib">
-   eJxTYWBgUKEithjheDYSJkc/AFUtFXo=
+   eJxTYWBgUCECWwwSPBsJI4sDAOWZC1I=
   </data>
  </layer>
- <layer name="Tile Layer 1" width="20" height="5">
+ <layer name="Tile Layer 1" width="10" height="5">
   <data encoding="base64" compression="zlib">
-   eJxjYBjcoBWI3fDI60HVkGJeEB55KxLNKwHiDCiOAeJuJIwsRywGAKGxC6o=
+   eJxjYKAuaAViNzzyelA1IByER50VVE0JEGdAcQwQdyPhEiRxAGCDB44=
   </data>
  </layer>
  <objectgroup name="triggers" visible="0">
