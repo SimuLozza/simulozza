@@ -49,6 +49,8 @@ class Level(object):
         self.jump = pygame.mixer.Sound(data_file('jump.wav'))
         self.shoot = pygame.mixer.Sound(data_file('shoot.wav'))
         self.explosion = pygame.mixer.Sound(data_file('explosion.wav'))
+        self.punch = pygame.mixer.Sound(data_file('punch.wav'))
+        self.throw = pygame.mixer.Sound(data_file('die_mother_fucker.wav'))
 
         self.level_complete = False
 
@@ -65,9 +67,9 @@ class Level(object):
             # is closed or the escape key is pressed
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
-                    return
+                    pygame.quit()
                 if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
-                    return
+                    return False
                 self.player.handle_event(self, event)
 
             if not (self.player.is_dead or self.level_complete):
@@ -88,13 +90,13 @@ class Level(object):
             if self.player.is_dead:
                 x, y = self.screen.get_size()
                 text_to_screen(self.screen, 'You Died!', x//2, y//2, align='center')
+                return False
 
             if self.tilemap.layers['triggers'].collide(self.player.collide_rect, 'exit'):
                 self.level_complete = True
                 x, y = self.screen.get_size()
                 text_to_screen(self.screen, 'Well done!', x//2, y//2, align='center')
-                return
-
+                return True
 
             pygame.display.flip()
 

@@ -3,12 +3,16 @@ import pygame
 from simulozza.color_surface import color_surface
 from simulozza.data_file import data_file
 from simulozza.objects import Bullet
+from simulozza.objects import Punch
+
 image_location = {
     "stand": (0, 0, 80, 110),
     "walk 1": (0, 110, 80, 110),
     "walk 2": (80, 110, 80, 110),
     "climb 1": (400, 0, 80, 110),
     "climb 2": (480, 0, 80, 110),
+    "punch 1": (160, 110, 80, 110),
+    "punch 2": (240, 110, 80, 110),
 }
 
 class Player(pygame.sprite.Sprite):
@@ -32,6 +36,7 @@ class Player(pygame.sprite.Sprite):
         # time since the player last shot
         self.gun_cooldown = 0
         self.jump_cooldown = 0
+        self.punch_cooldown = 0
         self.on_ladder = False
         self.animate_time = 0
         self.animate_frame = ''
@@ -135,22 +140,19 @@ class Player(pygame.sprite.Sprite):
             self.set_image("stand", flip=True)
 
         # handle the player shooting key
-        if key[pygame.K_LSHIFT] and not self.gun_cooldown:
-            # create a bullet at an appropriate position (the side of the player
-            # sprite) and travelling in the correct direction
-            if self.direction > 0:
-                Bullet(self.rect.midright, 1, game.sprites)
-            else:
-                Bullet(self.rect.midleft, -1, game.sprites)
-            # set the amount of time until the player can shoot again
-            self.gun_cooldown = 1
-            game.shoot.play()
+        if key[pygame.K_z] and not self.gun_cooldown:
+            self.shoot(game)
+
+        #handle the player punching key
+        if key[pygame.K_x] and not self.punch_cooldown:
+            self.punch(game)
 
         # decrement the time since the player last shot to a minimum of 0 (so
         # boolean checks work)
         self.gun_cooldown = max(0, self.gun_cooldown - dt)
         self.hurt_cooldown = max(0, self.hurt_cooldown - dt)
         self.jump_cooldown = max(0, self.jump_cooldown - dt)
+        self.punch_cooldown = max(0, self.punch_cooldown - dt)
 
         self.set_color = None
         if self.hurt_cooldown > 0:
@@ -231,3 +233,29 @@ class Player(pygame.sprite.Sprite):
 
         # re-focus the tilemap  viewport on the player's new position
         game.tilemap.set_focus(new.x, new.y)
+
+    def shoot(self, game):
+
+        # create a bullet at an appropriate position (the side of the player
+        # sprite) and travelling in the correct direction
+        if self.direction > 0:
+            Bullet(self.rect.midright, 1, game.sprites)
+        else:
+            Bullet(self.rect.midleft, -1, game.sprites)
+        # set the amount of time until the player can shoot again
+        self.gun_cooldown = 1
+        game.shoot.play()
+
+    def punch(self, game):
+        # ADD ANIMATION
+        self.animate("punch 1", "punch 2", 2)
+        # create a bullet at an appropriate position (the side of the player
+        # sprite) and travelling in the correct direction
+        if self.direction > 0:
+            Punch(self.rect.midright, 1, game.sprites)
+        else:
+            Punch(self.rect.midleft, -1, game.sprites)
+        # set the amount of time until the player can shoot again
+        self.punch_cooldown = 1
+        game.throw.play()
+
