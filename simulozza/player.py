@@ -95,13 +95,13 @@ class Player(pygame.sprite.Sprite):
             # up (positive Y is down the screen)
             self.dy = -500
             self.mid_air = True
-            self.jump_cooldown = 0.5
+            self.jump_cooldown = 0.25
 
         elif self.mid_air and not self.already_double_jumped and not self.jump_cooldown:
-            game.jump.play()
+            game.double_jump.play()
             self.dy = -500
             self.already_double_jumped = True
-            self.jump_cooldown = 0.5
+            self.jump_cooldown = 0.25
 
     def update(self, dt, game):
         self.animate_time += dt

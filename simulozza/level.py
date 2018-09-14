@@ -54,6 +54,7 @@ class Level(object):
 
         # load the sound effects used in playing a level of the game
         self.jump = pygame.mixer.Sound(data_file('jump.wav'))
+        self.double_jump = pygame.mixer.Sound(data_file('double_jump.wav'))
         self.shoot = pygame.mixer.Sound(data_file('shoot.wav'))
         self.explosion = pygame.mixer.Sound(data_file('explosion.wav'))
 
