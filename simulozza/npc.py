@@ -3,7 +3,6 @@ import pygame
 from simulozza.data_file import data_file
 
 
-
 class Enemy(pygame.sprite.Sprite):
     image_sheet = 'Daz-NPC.png'
     image_location = {
@@ -82,3 +81,38 @@ class Bug(Enemy):
     }
     def set_image(self, image_name, flip=False):
         super().set_image(image_name, flip=not flip)
+
+
+class matt(pygame.sprite.Sprite):
+    image_sheet = 'Matt.png'
+    image_location = {
+        "stand": (0, 0, 80, 110),
+    }
+
+    def __init__(self, location, *groups):
+        super().__init__(*groups)
+        self.sheet = pygame.image.load(data_file(self.image_sheet))
+        self.set_image("stand")
+        self.rect = pygame.rect.Rect(location, self.image.get_size())
+        self.rect.bottomleft = location
+        # movement in the X direction; positive is right, negative is left
+        self.direction = 1
+        self.animate_time = 0
+        self.dead = False
+
+    def update(self, dt, game):
+        # check for collision with the player; on collision mark the flag on the
+        # player to indicate game over (a health level could be decremented here
+        # instead)
+        if self.rect.colliderect(game.player.collide_rect):
+            x, y = game.screen.get_size()
+            text_to_screen(game.screen, 'You Won!', x // 2, y // 2, align='center')
+
+    def set_image(self, image_name, flip=False):
+        location = self.image_location[image_name]
+        image = self.sheet.subsurface(location)
+        if flip:
+            image = pygame.transform.flip(image, True, False)
+        self.image = image
+
+
