@@ -2,16 +2,15 @@ import pygame
 import kezmenu
 
 from simulozza.level import Level
-from simulozza.data_file import data_file
+from simulozza.data_file import data_file, level_names
 
 
 class Menu(object):
     running = True
 
     def rungame(self):
-        level_list = ['level1-1.tmx', 'level1-2.tmx', 'level1-3.tmx', 'level1-4.tmx', 'level2-1.tmx']
-        for i in level_list:
-            succeeded = Level(self.screen, data_file(i), data_file('background.png')).run()
+        for level in level_names():
+            succeeded = Level(self.screen, data_file(level), data_file('background.png')).run()
             if succeeded == False:
                 return
         return
