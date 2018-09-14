@@ -113,6 +113,8 @@ class KezMenu(KezMenuEffectAble):
                       update call (commonly obtained from a call on pygame.Clock.tick)
         """
         for e in events:
+            if e.type == pygame.JOYBUTTONDOWN and e.button == 0:
+                self.options[self.option]['callable']()
             if e.type == pygame.KEYDOWN:
                 if e.key == pygame.K_DOWN:
                     self.option += 1
