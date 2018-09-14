@@ -10,7 +10,7 @@ import pygame
 from simulozza import tmx
 from simulozza.data_file import data_file
 from simulozza.health import HealthIcon
-from simulozza.npc import Enemy
+from simulozza.npc import Enemy, Bug
 from simulozza.player import Player
 from simulozza.text import text_to_screen
 from simulozza.cloud import Cloud
@@ -52,7 +52,10 @@ class Level(object):
 
         # add an enemy for each "enemy" trigger in the map
         for enemy in self.tilemap.layers['triggers'].find('enemy'):
-            Enemy(enemy.bottomleft, self.enemies)
+            if enemy['enemy'] == 'darren':
+                Enemy(enemy.bottomleft, self.enemies)
+            else:
+                Bug(enemy.bottomleft, self.enemies)
 
         for cloud in self.tilemap.layers['triggers'].find('cloud'):
             Cloud((cloud.px, cloud.py), self.sprites)
@@ -62,6 +65,10 @@ class Level(object):
         self.double_jump = pygame.mixer.Sound(data_file('double_jump.wav'))
         self.shoot = pygame.mixer.Sound(data_file('shoot.wav'))
         self.explosion = pygame.mixer.Sound(data_file('explosion.wav'))
+        self.punch = pygame.mixer.Sound(data_file('punch.wav'))
+        self.hit = pygame.mixer.Sound(data_file('is_that_all.wav'))
+        self.throw = pygame.mixer.Sound(data_file('die_mother_fucker.wav'))
+        #self.hurt = pygame.mixer.Sound(data_file('.wav'))
 
         self.level_complete = False
 
@@ -78,9 +85,9 @@ class Level(object):
             # is closed or the escape key is pressed
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
-                    return
+                    pygame.quit()
                 if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
-                    return
+                    return False
                 self.player.handle_event(self, event)
 
             if not (self.player.is_dead or self.level_complete):
@@ -106,8 +113,7 @@ class Level(object):
                 self.level_complete = True
                 x, y = self.screen.get_size()
                 text_to_screen(self.screen, 'Well done!', x//2, y//2, align='center')
-                return
-
+                return True
 
             pygame.display.flip()
 
@@ -117,5 +123,5 @@ if __name__ == '__main__':
     # run the game
     import sys
     pygame.init()
-    screen = pygame.display.set_mode((1280, 760))  # , pygame.FULLSCREEN)
+    screen = pygame.display.set_mode((1280, 760)) #, pygame.FULLSCREEN)
     Level(screen, data_file(sys.argv[1]), data_file('background.png')).run()

@@ -3,12 +3,19 @@ import pygame
 from simulozza.color_surface import color_surface
 from simulozza.data_file import data_file
 from simulozza.objects import Bullet
+from simulozza.objects import Punch
+
 image_location = {
     "stand": (0, 0, 80, 110),
     "walk 1": (0, 110, 80, 110),
     "walk 2": (80, 110, 80, 110),
-    "climb 1": (400, 0, 80, 110),
+    "climb 1": (415, 0, 80, 110),
     "climb 2": (480, 0, 80, 110),
+    "jumping": (80, 0, 80, 110),
+    "falling": (560, 0, 80, 110),
+    "punch 1": (160, 110, 80, 110),
+    "punch 2": (240, 110, 80, 110),
+    "dead": (340, 0, 80, 110),
 }
 
 class Player(pygame.sprite.Sprite):
@@ -32,6 +39,7 @@ class Player(pygame.sprite.Sprite):
         # time since the player last shot
         self.gun_cooldown = 0
         self.jump_cooldown = 0
+        self.punch_cooldown = 0
         self.on_ladder = False
         self.animate_time = 0
         self.animate_frame = ''
@@ -70,7 +78,9 @@ class Player(pygame.sprite.Sprite):
         if self.player_shrunk:
             image = pygame.transform.scale(image, (30, 30))
         if self.rect is not None:
+            midbot = self.rect.midbottom
             self.rect.size = image.get_size()
+            self.rect.midbottom = midbot
         self.image = image
 
     def animate(self, frame1, frame2, frame_time, flip=False):
@@ -135,22 +145,19 @@ class Player(pygame.sprite.Sprite):
             self.set_image("stand", flip=True)
 
         # handle the player shooting key
-        if key[pygame.K_LSHIFT] and not self.gun_cooldown:
-            # create a bullet at an appropriate position (the side of the player
-            # sprite) and travelling in the correct direction
-            if self.direction > 0:
-                Bullet(self.rect.midright, 1, game.sprites)
-            else:
-                Bullet(self.rect.midleft, -1, game.sprites)
-            # set the amount of time until the player can shoot again
-            self.gun_cooldown = 1
-            game.shoot.play()
+        if key[pygame.K_z] and not self.gun_cooldown:
+            self.shoot(game)
+
+        #handle the player punching key
+        if key[pygame.K_x] and not self.punch_cooldown:
+            self.punch(game)
 
         # decrement the time since the player last shot to a minimum of 0 (so
         # boolean checks work)
         self.gun_cooldown = max(0, self.gun_cooldown - dt)
         self.hurt_cooldown = max(0, self.hurt_cooldown - dt)
         self.jump_cooldown = max(0, self.jump_cooldown - dt)
+        self.punch_cooldown = max(0, self.punch_cooldown - dt)
 
         self.set_color = None
         if self.hurt_cooldown > 0:
@@ -170,6 +177,12 @@ class Player(pygame.sprite.Sprite):
         else:
             # add gravity on to the currect vertical speed
             self.dy = min(400, self.dy + 40)
+
+        if self.punch_cooldown > 0:
+            if self.direction > 0:
+                self.set_image("punch 1")
+            else:
+                self.set_image("punch 1", flip=True)
 
         # now add the distance travelled for this update to the player position
         self.rect.y += self.dy * dt
@@ -206,6 +219,18 @@ class Player(pygame.sprite.Sprite):
                 new.top = cell.bottom
                 self.dy = 0
 
+        if not self.resting:
+            if self.dy < 0:
+                if self.direction > 0:
+                    self.set_image("jumping")
+                else:
+                    self.set_image("jumping", flip=True)
+            else:
+                if self.direction > 0:
+                    self.set_image("falling")
+                else:
+                    self.set_image("falling", flip=True)
+
         for cell in game.tilemap.layers['triggers'].collide(new, 'lava'):
             self.hurt()
 
@@ -226,8 +251,37 @@ class Player(pygame.sprite.Sprite):
         for cell in game.tilemap.layers['triggers'].collide(new, 'expand'):
             self.player_shrunk = False
 
+        if self.is_dead:
+            self.set_image("dead")
+
         # this reassignment of the image rect must be here at the bottom
         self.rect.midbottom = new.midbottom
 
         # re-focus the tilemap  viewport on the player's new position
         game.tilemap.set_focus(new.x, new.y)
+
+    def shoot(self, game):
+
+        # create a bullet at an appropriate position (the side of the player
+        # sprite) and travelling in the correct direction
+        if self.direction > 0:
+            Bullet(self.rect.midright, 1, game.sprites)
+        else:
+            Bullet(self.rect.midleft, -1, game.sprites)
+        # set the amount of time until the player can shoot again
+        self.gun_cooldown = 1
+        game.shoot.play()
+
+    def punch(self, game):
+        # ADD ANIMATION
+
+        # create a bullet at an appropriate position (the side of the player
+        # sprite) and travelling in the correct direction
+        if self.direction > 0:
+            Punch(self.rect.midright, 1, game.sprites)
+        else:
+            Punch(self.rect.midleft, -1, game.sprites)
+        # set the amount of time until the player can shoot again
+        self.punch_cooldown = 0.5
+        game.punch.play()
+

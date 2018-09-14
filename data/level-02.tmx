@@ -1,70 +1,74 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.1" tiledversion="2018.09.12" orientation="orthogonal" renderorder="right-down" width="16" height="5" tilewidth="70" tileheight="70" infinite="0" nextlayerid="4" nextobjectid="25">
+<map version="1.0" tiledversion="1.1.6" orientation="orthogonal" renderorder="right-down" width="30" height="7" tilewidth="70" tileheight="70" infinite="0" nextobjectid="24">
  <tileset firstgid="1" source="kenney_complete_base_tiles_spritesheet.tsx"/>
  <tileset firstgid="157" source="kenney_platformerPack_industrial_tilesheet.tsx"/>
- <tileset firstgid="269" source="kenny request pack sheet.tsx"/>
- <layer id="1" name="Tile Layer 2" width="16" height="5">
+ <layer name="background" width="30" height="7">
   <data encoding="base64" compression="zlib">
-   eJxTYWBgUKEAW4xwDACqRxBB
+   eJxTYWBgUBkAbDGKRzGVccMA2g0AuvQr4Q==
   </data>
  </layer>
- <layer id="2" name="Tile Layer 1" width="16" height="5">
+ <layer name="Tile Layer 1" width="30" height="7">
   <data encoding="base64" compression="zlib">
-   eJxjYBhY4AbEUmToA+nRA+IgINZEEncFYl0s6tHFHYHYCogzoLibRAzTBwA5egqn
+   eJxjYBhZwA2N34qEsQFC8sSCIBLMbcWCyQXoenGZic1Ocu3WQ9PHw8jAUMaAwB8I2Eeu3VZAXALEGQRwDA5cQgEGABAXIrw=
   </data>
  </layer>
- <objectgroup id="3" name="triggers" visible="0">
+ <objectgroup name="triggers" visible="0">
   <object id="1" name="player" x="0" y="210" width="70" height="70">
    <properties>
     <property name="player" type="bool" value="true"/>
    </properties>
   </object>
-  <object id="2" name="exit" x="1050" y="210" width="70" height="70">
+  <object id="2" name="exit" x="2030" y="350" width="35" height="70">
    <properties>
     <property name="exit" type="bool" value="true"/>
    </properties>
   </object>
-  <object id="5" x="0" y="280" width="139" height="70">
+  <object id="5" x="280" y="140" width="210" height="210">
    <properties>
     <property name="blockers" value="blrt"/>
    </properties>
   </object>
-  <object id="11" x="0" y="350" width="1120" height="70">
+  <object id="9" x="0" y="280" width="70" height="140">
    <properties>
     <property name="blockers" value="blrt"/>
    </properties>
   </object>
-  <object id="12" x="139" y="311" width="841" height="37">
-   <properties>
-    <property name="lava" type="bool" value="true"/>
-   </properties>
-  </object>
-  <object id="15" x="980" y="280" width="140" height="70">
+  <object id="14" x="280" y="350" width="210" height="25">
    <properties>
     <property name="blockers" value="blrt"/>
    </properties>
   </object>
-  <object id="17" x="280" y="210" width="140" height="36">
+  <object id="15" x="0" y="420" width="2100" height="70">
    <properties>
     <property name="blockers" value="blrt"/>
    </properties>
   </object>
-  <object id="21" x="0" y="-70" width="1120" height="70">
+  <object id="17" x="210" y="350" width="72" height="70">
+   <properties>
+    <property name="shrink" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="18" x="490" y="350" width="70" height="70">
+   <properties>
+    <property name="expand" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="19" x="560" y="350" width="700" height="70">
    <properties>
     <property name="blockers" value="blrt"/>
    </properties>
   </object>
-  <object id="22" x="-70" y="-70" width="70" height="490">
+  <object id="20" x="700" y="280" width="490" height="70">
    <properties>
     <property name="blockers" value="blrt"/>
    </properties>
   </object>
-  <object id="23" x="1120" y="-70" width="70" height="490">
+  <object id="21" x="770" y="210" width="350" height="70">
    <properties>
     <property name="blockers" value="blrt"/>
    </properties>
   </object>
-  <object id="24" x="700" y="210" width="140" height="36">
+  <object id="22" x="840" y="140" width="210" height="70">
    <properties>
     <property name="blockers" value="blrt"/>
    </properties>
