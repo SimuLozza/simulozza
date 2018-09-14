@@ -23,4 +23,4 @@ class Lightning(pygame.sprite.Sprite):
             self.kill()
 
         if self.rect.colliderect(game.player.collide_rect):
-            game.player.is_dead = True
+            game.player.hurt()
