@@ -2,14 +2,15 @@
 <map version="1.0" tiledversion="1.1.6" orientation="orthogonal" renderorder="right-down" width="16" height="5" tilewidth="70" tileheight="70" infinite="0" nextobjectid="24">
  <tileset firstgid="1" source="kenney_complete_base_tiles_spritesheet.tsx"/>
  <tileset firstgid="157" source="kenney_platformerPack_industrial_tilesheet.tsx"/>
+ <tileset firstgid="269" source="kenny request pack sheet.tsx"/>
  <layer name="Tile Layer 2" width="16" height="5">
   <data encoding="base64" compression="zlib">
-   eJxTYWBgUCEC4wIWIxwDAMZoD2k=
+   eJxTYWBgUKEAW4xwDACqRxBB
   </data>
  </layer>
- <layer name="Tile Layer 1" width="16" height="5" visible="0">
+ <layer name="Tile Layer 1" width="16" height="5">
   <data encoding="base64" compression="zlib">
-   eJxjYKAOkCJSDB24EaFGD494EJpYIBTDgCMQW+HQDxLPgOJuKJ6OxO5GkscGQOIAKa4H1g==
+   eJxjYKAOkCJTnxsRalyhGB3oAXEQmlggFBMDrIA4A4q7ScRcUAwASC4Jrw==
   </data>
  </layer>
  <objectgroup name="triggers" visible="0">
