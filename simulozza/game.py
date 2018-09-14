@@ -9,7 +9,7 @@ class Menu(object):
     running = True
 
     def rungame(self):
-        level_list = ['level-enemy.tmx', 'level1-2.tmx']
+        level_list = ['level1-1.tmx', 'level1-2.tmx', 'level1-3.tmx', 'level1-4.tmx', 'level2-1.tmx']
         for i in level_list:
             succeeded = Level(self.screen, data_file(i), data_file('background.png')).run()
             if succeeded == False:
@@ -35,13 +35,8 @@ class Menu(object):
             pygame.display.flip()
 
 
-
-
-
-
-
 if __name__ == '__main__':
     pygame.init()
     screen = pygame.display.set_mode((1280, 760), pygame.FULLSCREEN)
-
     Menu().main(screen)
+

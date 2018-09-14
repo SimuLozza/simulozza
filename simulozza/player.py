@@ -7,9 +7,9 @@ from simulozza.objects import Punch
 
 image_location = {
     "stand": (0, 0, 80, 110),
-    "walk 1": (0, 116, 80, 104),
-    "walk 2": (80, 116, 80, 104),
-    "climb 1": (400, 0, 80, 110),
+    "walk 1": (0, 110, 80, 110),
+    "walk 2": (80, 110, 80, 110),
+    "climb 1": (415, 0, 80, 110),
     "climb 2": (480, 0, 80, 110),
     "jumping": (80, 0, 80, 110),
     "falling": (560, 0, 80, 110),
@@ -50,7 +50,6 @@ class Player(pygame.sprite.Sprite):
         self.hurt_cooldown = 0
 
     def hurt(self):
-        #game.hurt.play()
         if self.hurt_cooldown > 0:
             return
         self.lives -= 1
