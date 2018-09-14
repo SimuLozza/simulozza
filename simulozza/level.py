@@ -10,7 +10,7 @@ import pygame
 from simulozza import tmx
 from simulozza.data_file import data_file
 from simulozza.health import HealthIcon
-from simulozza.npc import Enemy, Bug
+from simulozza.npc import Enemy, Bug, Matt
 from simulozza.player import Player
 from simulozza.text import text_to_screen
 from simulozza.cloud import Cloud
@@ -18,6 +18,7 @@ from simulozza.cloud import Cloud
 
 class Level(object):
     def __init__(self, screen, level_map, background, start_life):
+        print('LOADING LEVEL', level_map)
         self.screen = screen
 
         # we draw the background as a static image so we can just load it in the
@@ -54,6 +55,8 @@ class Level(object):
         for enemy in self.tilemap.layers['triggers'].find('enemy'):
             if enemy['enemy'] == 'darren':
                 Enemy(enemy.bottomleft, self.enemies)
+            elif enemy['enemy'] == 'matt':
+                Matt(enemy.bottomleft, self.enemies)
             else:
                 Bug(enemy.bottomleft, self.enemies)
 
@@ -87,7 +90,7 @@ class Level(object):
                 if event.type == pygame.QUIT:
                     pygame.quit()
                 if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
-                    return False
+                    return [False, 0]
                 self.player.handle_event(self, event)
 
             if not (self.player.is_dead or self.level_complete):
@@ -109,6 +112,10 @@ class Level(object):
                 x, y = self.screen.get_size()
                 text_to_screen(self.screen, 'You Died!', x//2, y//2, align='center')
 
+            if self.player.won:
+                x, y = self.screen.get_size()
+                text_to_screen(self.screen, 'You Won!', x // 2, y // 2, align='center')
+
             if self.tilemap.layers['triggers'].collide(self.player.collide_rect, 'exit'):
                 self.level_complete = True
                 x, y = self.screen.get_size()
@@ -128,4 +135,4 @@ if __name__ == '__main__':
         joystick = pygame.joystick.Joystick(0)
         joystick.init()
     screen = pygame.display.set_mode((1280, 760)) #, pygame.FULLSCREEN)
-    Level(screen, data_file(sys.argv[1]), data_file('background.png')).run()
+    Level(screen, data_file(sys.argv[1]), data_file('background.png'), 3).run()

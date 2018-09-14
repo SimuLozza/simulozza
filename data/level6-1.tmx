@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.1.6" orientation="orthogonal" renderorder="right-down" width="30" height="7" tilewidth="70" tileheight="70" infinite="0" nextobjectid="58">
+<map version="1.0" tiledversion="1.1.6" orientation="orthogonal" renderorder="right-down" width="30" height="7" tilewidth="70" tileheight="70" infinite="0" nextobjectid="73">
  <tileset firstgid="1" source="kenney_complete_base_tiles_spritesheet.tsx"/>
  <tileset firstgid="157" source="kenney_platformerPack_industrial_tilesheet.tsx"/>
  <layer name="background" width="30" height="7">
@@ -9,23 +9,18 @@
  </layer>
  <layer name="Tile Layer 1" width="30" height="7">
   <data encoding="base64" compression="zlib">
-   eJxjYBgFwxm4DZC9QQNkbwkQZxDA09FwDBSjy5VAMTIfXQ6GAReADxY=
+   eJxjYBgFwxm4DZC9QVQ06wIBPjLIIAJ3o2Fccuhi6GxkDADzQA/q
   </data>
  </layer>
- <objectgroup name="triggers">
+ <objectgroup name="triggers" visible="0">
   <object id="1" name="player" x="0" y="350" width="70" height="70">
    <properties>
     <property name="player" type="bool" value="true"/>
    </properties>
   </object>
-  <object id="15" x="0" y="420" width="2100" height="70">
+  <object id="15" x="0" y="420" width="630" height="70">
    <properties>
     <property name="blockers" value="blrt"/>
-   </properties>
-  </object>
-  <object id="25" x="630" y="350" width="70" height="70">
-   <properties>
-    <property name="enemy" value="darren"/>
    </properties>
   </object>
   <object id="26" x="210" y="350" width="70" height="70">
@@ -76,6 +71,66 @@
   <object id="57" x="1960" y="350" width="70" height="70">
    <properties>
     <property name="enemy" value="matt"/>
+   </properties>
+  </object>
+  <object id="58" x="910" y="420" width="210" height="70">
+   <properties>
+    <property name="blockers" value="blrt"/>
+   </properties>
+  </object>
+  <object id="59" x="1330" y="420" width="140" height="70">
+   <properties>
+    <property name="blockers" value="blrt"/>
+   </properties>
+  </object>
+  <object id="60" x="1820" y="420" width="280" height="70">
+   <properties>
+    <property name="blockers" value="blrt"/>
+   </properties>
+  </object>
+  <object id="61" x="1610" y="420" width="70" height="70">
+   <properties>
+    <property name="blockers" value="blrt"/>
+   </properties>
+  </object>
+  <object id="62" x="-70" y="490" width="2240" height="70">
+   <properties>
+    <property name="blockers" value="blrt"/>
+   </properties>
+  </object>
+  <object id="63" x="630" y="350" width="70" height="70">
+   <properties>
+    <property name="reverse" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="65" x="630" y="450" width="280" height="40">
+   <properties>
+    <property name="lava" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="68" x="1120" y="450" width="210" height="40">
+   <properties>
+    <property name="lava" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="69" x="1470" y="450" width="140" height="40">
+   <properties>
+    <property name="lava" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="70" x="1680" y="450" width="140" height="40">
+   <properties>
+    <property name="lava" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="71" x="1330" y="380" width="70" height="40">
+   <properties>
+    <property name="spikes" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="72" x="1610" y="378" width="70" height="42">
+   <properties>
+    <property name="spikes" type="bool" value="true"/>
    </properties>
   </object>
  </objectgroup>

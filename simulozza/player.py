@@ -48,6 +48,7 @@ class Player(pygame.sprite.Sprite):
         self.is_dead = False
         self.lives = start_life
         self.hurt_cooldown = 0
+        self.won = False
 
         self.sparkle_joy_motion = (0, 0)
 
