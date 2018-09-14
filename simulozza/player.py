@@ -92,8 +92,13 @@ class Player(pygame.sprite.Sprite):
             self.set_image(frame2, flip)
 
     def handle_event(self, game, event):
-        if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
-            self.jump(game)
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_SPACE:
+                self.jump(game)
+            elif event.key == pygame.K_z and not self.gun_cooldown:
+                self.shoot(game)
+            elif event.key == pygame.K_x and not self.punch_cooldown:
+                self.punch(game)
 
     def jump(self, game):
         # if the player's allowed to let them jump with the spacebar; note that
@@ -119,9 +124,9 @@ class Player(pygame.sprite.Sprite):
         # use in movement collision response
         last = self.collide_rect
 
-        on_ladder = False
+        self.on_ladder = False
         for cell in game.tilemap.layers['triggers'].collide(last, 'ladder'):
-            on_ladder = True
+            self.on_ladder = True
 
         # handle the player movement left/right keys
         key = pygame.key.get_pressed()
@@ -144,14 +149,6 @@ class Player(pygame.sprite.Sprite):
         else:
             self.set_image("stand", flip=True)
 
-        # handle the player shooting key
-        if key[pygame.K_z] and not self.gun_cooldown:
-            self.shoot(game)
-
-        #handle the player punching key
-        if key[pygame.K_x] and not self.punch_cooldown:
-            self.punch(game)
-
         # decrement the time since the player last shot to a minimum of 0 (so
         # boolean checks work)
         self.gun_cooldown = max(0, self.gun_cooldown - dt)
@@ -164,7 +161,7 @@ class Player(pygame.sprite.Sprite):
             if (self.hurt_cooldown % 0.25) > 0.125:
                 self.set_color = (255, 255, 255)
 
-        if on_ladder:
+        if self.on_ladder:
             if key[pygame.K_UP]:
                 self.animate('climb 1', 'climb 2', .20)
                 self.dy = -200
@@ -219,7 +216,7 @@ class Player(pygame.sprite.Sprite):
                 new.top = cell.bottom
                 self.dy = 0
 
-        if not self.resting:
+        if not self.resting and not self.on_ladder:
             if self.dy < 0:
                 if self.direction > 0:
                     self.set_image("jumping")

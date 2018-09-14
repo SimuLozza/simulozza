@@ -18,18 +18,19 @@ class Menu(object):
     def main(self, screen):
         clock = pygame.time.Clock()
         self.screen = screen
-        background = pygame.image.load(data_file('background.png'))
         menu = kezmenu.KezMenu(
             ['Play!', self.rungame],
             ['Quit', lambda: setattr(self, 'running', False)],
         )
-        menu.x = 200
-        menu.y = 100
+        menu.x = 400
+        menu.y = 300
         menu.enableEffect('raise-col-padding-on-focus', enlarge_time=0.1)
+        menu.font = pygame.font.Font(data_file('VT220-mod.ttf'), 50)
+        menu.color = (200, 200, 200)
 
         while self.running:
             menu.update(pygame.event.get(), clock.tick(30)/1000.)
-            screen.blit(background, (0, 0))
+            screen.fill((0, 0, 0))
             menu.draw(screen)
             pygame.display.flip()
 
