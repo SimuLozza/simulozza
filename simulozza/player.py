@@ -49,6 +49,8 @@ class Player(pygame.sprite.Sprite):
         self.lives = 3
         self.hurt_cooldown = 0
 
+        self.sparkle_joy_motion = (0, 0)
+
     def hurt(self):
         if self.hurt_cooldown > 0:
             return
@@ -92,6 +94,17 @@ class Player(pygame.sprite.Sprite):
             self.set_image(frame2, flip)
 
     def handle_event(self, game, event):
+        if event.type == pygame.JOYBUTTONDOWN:
+            if event.button == 0:
+                self.jump(game)
+            elif event.button == 2 and not self.gun_cooldown:
+                self.shoot(game)
+            elif event.button == 1 and not self.punch_cooldown:
+                self.punch(game)
+
+        if event.type == pygame.JOYHATMOTION:
+            self.sparkle_joy_motion = event.value
+
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE:
                 self.jump(game)
@@ -136,6 +149,9 @@ class Player(pygame.sprite.Sprite):
         if key[pygame.K_RIGHT]:
             move += 300 * dt
 
+        if self.sparkle_joy_motion[0]:
+            move = self.sparkle_joy_motion[0] * 300 * dt
+
         if move > 0:
             self.rect.x += move
             self.animate("walk 1", "walk 2", .20)
@@ -162,11 +178,11 @@ class Player(pygame.sprite.Sprite):
                 self.set_color = (255, 255, 255)
 
         if self.on_ladder:
-            if key[pygame.K_UP]:
+            if key[pygame.K_UP] or self.sparkle_joy_motion[1] > 0:
                 self.animate('climb 1', 'climb 2', .20)
                 self.dy = -200
                 # def animate(frame1, frame2, frame_time):
-            elif key[pygame.K_DOWN]:
+            elif key[pygame.K_DOWN] or self.sparkle_joy_motion[1] < 0:
                 self.animate('climb 1', 'climb 2', .30)
                 self.dy = +200
             else:
