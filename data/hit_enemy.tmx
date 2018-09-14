@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" tiledversion="1.1.6" orientation="orthogonal" renderorder="right-down" width="15" height="7" tilewidth="70" tileheight="70" infinite="0" nextobjectid="25">
+ <tileset firstgid="1" source="kenney_complete_base_tiles_spritesheet.tsx"/>
+ <tileset firstgid="157" source="kenney_platformerPack_industrial_tilesheet.tsx"/>
+ <layer name="Tile Layer 1" width="15" height="7">
+  <data encoding="base64" compression="zlib">
+   eJxjYBhZwI1MfXpAHIRDjo0Rv14rIC4B4gwycAwQAwBGYgcg
+  </data>
+ </layer>
+ <objectgroup name="triggers">
+  <object id="1" name="player" x="420" y="350" width="70" height="70">
+   <properties>
+    <property name="enemy_hit" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="2" name="exit" x="1015" y="350" width="35" height="70">
+   <properties>
+    <property name="exit" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="15" x="0" y="420" width="1050" height="70">
+   <properties>
+    <property name="blockers" value="blrt"/>
+   </properties>
+  </object>
+  <object id="19" x="140" y="70" width="350" height="70">
+   <properties>
+    <property name="blockers" value="blrt"/>
+   </properties>
+  </object>
+  <object id="24" name="player" x="17.5" y="332.5" width="70" height="70">
+   <properties>
+    <property name="player" type="bool" value="true"/>
+   </properties>
+  </object>
+ </objectgroup>
+</map>
