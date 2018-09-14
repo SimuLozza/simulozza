@@ -17,7 +17,7 @@ from simulozza.cloud import Cloud
 
 
 class Level(object):
-    def __init__(self, screen, level_map, background):
+    def __init__(self, screen, level_map, background, start_life):
         self.screen = screen
 
         # we draw the background as a static image so we can just load it in the
@@ -39,7 +39,7 @@ class Level(object):
         # fine the player start cell in the triggers layer
         start_cell = self.tilemap.layers['triggers'].find('player')[0]
         # use the "pixel" x and y coordinates for the player start
-        self.player = Player((start_cell.px, start_cell.py), self.sprites)
+        self.player = Player((start_cell.px, start_cell.py), start_life, self.sprites)
 
         self.gui = pygame.sprite.Group()
         [self.gui.add(HealthIcon(i)) for i in range(3)]
@@ -113,7 +113,7 @@ class Level(object):
                 self.level_complete = True
                 x, y = self.screen.get_size()
                 text_to_screen(self.screen, 'Well done!', x//2, y//2, align='center')
-                return True
+                return [True, self.player.lives]
 
             pygame.display.flip()
 
@@ -123,5 +123,9 @@ if __name__ == '__main__':
     # run the game
     import sys
     pygame.init()
+    pygame.joystick.init()
+    if pygame.joystick.get_count():
+        joystick = pygame.joystick.Joystick(0)
+        joystick.init()
     screen = pygame.display.set_mode((1280, 760)) #, pygame.FULLSCREEN)
     Level(screen, data_file(sys.argv[1]), data_file('background.png')).run()

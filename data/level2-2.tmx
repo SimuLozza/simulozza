@@ -18,7 +18,7 @@
    eJxjYBgFyOAVGh7uAABZvQOp
   </data>
  </layer>
- <objectgroup name="triggers" visible="0">
+ <objectgroup name="triggers">
   <object id="1" name="player" x="0" y="420" width="70" height="70">
    <properties>
     <property name="player" type="bool" value="true"/>
@@ -89,7 +89,7 @@
     <property name="blockers" value="blrt"/>
    </properties>
   </object>
-  <object id="34" x="280" y="280" width="280" height="210">
+  <object id="34" x="280" y="323" width="280" height="167">
    <properties>
     <property name="blockers" value="blrt"/>
    </properties>

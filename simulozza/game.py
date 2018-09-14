@@ -9,10 +9,13 @@ class Menu(object):
     running = True
 
     def rungame(self):
+        start_life = 3
         for level in level_names():
-            succeeded = Level(self.screen, data_file(level), data_file('background.png')).run()
-            if succeeded == False:
+            succeeded = Level(self.screen, data_file(level), data_file('background.png'), start_life).run()
+            if succeeded[0] == False:
                 return
+            start_life = succeeded[1]
+
         return
 
     def main(self, screen):
@@ -37,6 +40,10 @@ class Menu(object):
 
 if __name__ == '__main__':
     pygame.init()
+    pygame.joystick.init()
+    if pygame.joystick.get_count():
+        joystick = pygame.joystick.Joystick(0)
+        joystick.init()
     screen = pygame.display.set_mode((1280, 760), pygame.FULLSCREEN)
     Menu().main(screen)
 
