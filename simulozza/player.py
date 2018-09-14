@@ -19,7 +19,7 @@ image_location = {
 }
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, location, *groups):
+    def __init__(self, location, start_life, *groups):
         super().__init__(*groups)
         self.player_shrunk = False
         self.rect = None
@@ -46,7 +46,7 @@ class Player(pygame.sprite.Sprite):
 
         # is the player dead?
         self.is_dead = False
-        self.lives = 3
+        self.lives = start_life
         self.hurt_cooldown = 0
 
         self.sparkle_joy_motion = (0, 0)
