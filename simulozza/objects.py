@@ -4,7 +4,7 @@ from simulozza.data_file import data_file
 
 
 class Bullet(pygame.sprite.Sprite):
-    image = pygame.image.load(data_file('bullet.png'))
+    image = pygame.image.load(data_file('swear.png'))
 
     def __init__(self, location, direction, *groups):
         super().__init__(*groups)
@@ -35,8 +35,10 @@ class Bullet(pygame.sprite.Sprite):
             # until its lifespan expires
             self.kill()
 
+
 class Punch(pygame.sprite.Sprite):
     image = pygame.image.load(data_file('transparent.png'))
+
     def __init__(self, location, direction, *groups):
         super().__init__(*groups)
         self.rect = pygame.rect.Rect(location, self.image.get_size())
