@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" tiledversion="1.1.6" orientation="orthogonal" renderorder="right-down" width="16" height="5" tilewidth="70" tileheight="70" infinite="0" nextobjectid="25">
+ <tileset firstgid="1" source="kenney_complete_base_tiles_spritesheet.tsx"/>
+ <tileset firstgid="157" source="kenney_platformerPack_industrial_tilesheet.tsx"/>
+ <tileset firstgid="269" source="kenny request pack sheet.tsx"/>
+ <layer name="Tile Layer 2" width="16" height="5">
+  <data encoding="base64" compression="zlib">
+   eJxTYWBgUKEAW4xwDACqRxBB
+  </data>
+ </layer>
+ <layer name="Tile Layer 1" width="16" height="5">
+  <data encoding="base64" compression="zlib">
+   eJxjYKAOkCJTrRsFduoBcRCaWCAUowNLKEYGVkCcAcXdJGIuKAYAMC4JsQ==
+  </data>
+ </layer>
+ <objectgroup name="triggers" visible="0">
+  <object id="1" name="player" x="0" y="210" width="70" height="70">
+   <properties>
+    <property name="player" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="2" name="exit" x="1050" y="210" width="70" height="70">
+   <properties>
+    <property name="exit" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="5" x="0" y="280" width="139" height="70">
+   <properties>
+    <property name="blockers" value="blrt"/>
+   </properties>
+  </object>
+  <object id="11" x="0" y="350" width="1120" height="70">
+   <properties>
+    <property name="blockers" value="blrt"/>
+   </properties>
+  </object>
+  <object id="12" x="139" y="311" width="841" height="37">
+   <properties>
+    <property name="lava" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="15" x="980" y="280" width="140" height="70">
+   <properties>
+    <property name="blockers" value="blrt"/>
+   </properties>
+  </object>
+  <object id="17" x="280" y="210" width="140" height="36">
+   <properties>
+    <property name="blockers" value="blrt"/>
+   </properties>
+  </object>
+  <object id="21" x="0" y="-70" width="1120" height="70">
+   <properties>
+    <property name="blockers" value="blrt"/>
+   </properties>
+  </object>
+  <object id="22" x="-70" y="-70" width="70" height="490">
+   <properties>
+    <property name="blockers" value="blrt"/>
+   </properties>
+  </object>
+  <object id="23" x="1120" y="-70" width="70" height="490">
+   <properties>
+    <property name="blockers" value="blrt"/>
+   </properties>
+  </object>
+  <object id="24" x="700" y="210" width="140" height="36">
+   <properties>
+    <property name="blockers" value="blrt"/>
+   </properties>
+  </object>
+ </objectgroup>
+</map>
