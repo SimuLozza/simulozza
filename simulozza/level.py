@@ -123,5 +123,9 @@ if __name__ == '__main__':
     # run the game
     import sys
     pygame.init()
+    pygame.joystick.init()
+    if pygame.joystick.get_count():
+        joystick = pygame.joystick.Joystick(0)
+        joystick.init()
     screen = pygame.display.set_mode((1280, 760)) #, pygame.FULLSCREEN)
     Level(screen, data_file(sys.argv[1]), data_file('background.png')).run()
