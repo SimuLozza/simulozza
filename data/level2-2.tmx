@@ -18,7 +18,7 @@
    eJxjYBgFyOAVGh7uAABZvQOp
   </data>
  </layer>
- <objectgroup name="triggers">
+ <objectgroup name="triggers" visible="0">
   <object id="1" name="player" x="0" y="420" width="70" height="70">
    <properties>
     <property name="player" type="bool" value="true"/>
