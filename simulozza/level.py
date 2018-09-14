@@ -30,7 +30,12 @@ class Level(object):
 
         # add a layer for our sprites controlled by the tilemap scrolling
         self.sprites = tmx.SpriteLayer()
-        self.tilemap.layers.append(self.sprites)
+        try:
+            fg = self.tilemap.layers['foreground']
+            index = self.tilemap.layers.index(fg)
+            self.tilemap.layers.insert(index, self.sprites)
+        except KeyError:
+            self.tilemap.layers.append(self.sprites)
         # fine the player start cell in the triggers layer
         start_cell = self.tilemap.layers['triggers'].find('player')[0]
         # use the "pixel" x and y coordinates for the player start
