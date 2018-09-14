@@ -9,10 +9,13 @@ class Menu(object):
     running = True
 
     def rungame(self):
+        start_life = 3
         for level in level_names():
-            succeeded = Level(self.screen, data_file(level), data_file('background.png')).run()
-            if succeeded == False:
+            succeeded = Level(self.screen, data_file(level), data_file('background.png'), start_life).run()
+            if succeeded[0] == False:
                 return
+            start_life = succeeded[1]
+
         return
 
     def main(self, screen):
