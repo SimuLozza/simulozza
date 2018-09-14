@@ -69,4 +69,3 @@ class Punch(pygame.sprite.Sprite):
             # we also remove the bullet from the game or it will continue on
             # until its lifespan expires
             self.kill()
->>>>>>> 05520480ef5c463309dfc877f5c677cdaa14addb
