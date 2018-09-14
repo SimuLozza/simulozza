@@ -115,5 +115,5 @@ if __name__ == '__main__':
     # run the game
     import sys
     pygame.init()
-    screen = pygame.display.set_mode((1280, 760))  # , pygame.FULLSCREEN)
+    screen = pygame.display.set_mode((1280, 760)) #, pygame.FULLSCREEN)
     Level(screen, data_file(sys.argv[1]), data_file('background.png')).run()
