@@ -42,4 +42,6 @@ class Menu(object):
 
 if __name__ == '__main__':
     pygame.init()
-    Menu().main(pygame.display.set_mode((640, 480)))
+    screen = pygame.display.set_mode((1280, 760), pygame.FULLSCREEN)
+
+    Menu().main(screen)

@@ -10,7 +10,7 @@ import pygame
 from simulozza import tmx
 from simulozza.data_file import data_file
 from simulozza.health import HealthIcon
-from simulozza.npc import Enemy
+from simulozza.npc import Enemy, Bug
 from simulozza.player import Player
 from simulozza.text import text_to_screen
 from simulozza.cloud import Cloud
@@ -47,7 +47,10 @@ class Level(object):
 
         # add an enemy for each "enemy" trigger in the map
         for enemy in self.tilemap.layers['triggers'].find('enemy'):
-            Enemy(enemy.bottomleft, self.enemies)
+            if enemy['enemy'] == 'darren':
+                Enemy(enemy.bottomleft, self.enemies)
+            else:
+                Bug(enemy.bottomleft, self.enemies)
 
         for cloud in self.tilemap.layers['triggers'].find('cloud'):
             Cloud((cloud.px, cloud.py), self.sprites)
