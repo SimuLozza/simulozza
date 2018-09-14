@@ -40,6 +40,10 @@ class Menu(object):
 
 if __name__ == '__main__':
     pygame.init()
+    pygame.joystick.init()
+    if pygame.joystick.get_count():
+        joystick = pygame.joystick.Joystick(0)
+        joystick.init()
     screen = pygame.display.set_mode((1280, 760), pygame.FULLSCREEN)
     Menu().main(screen)
 
