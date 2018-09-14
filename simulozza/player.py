@@ -17,7 +17,7 @@ class Player(pygame.sprite.Sprite):
         self.player_shrunk = False
         self.rect = None
         self.set_color = False
-        self.sheet = pygame.image.load(data_file('kenney_female_tilesheet.png'))
+        self.sheet = pygame.image.load(data_file('lauren_tilesheet.png'))
         self.set_image("stand")
         self.rect = pygame.rect.Rect((0, 0), self.image.get_size())
         self.rect.bottomleft = location
