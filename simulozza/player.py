@@ -7,10 +7,12 @@ from simulozza.objects import Punch
 
 image_location = {
     "stand": (0, 0, 80, 110),
-    "walk 1": (0, 110, 80, 110),
-    "walk 2": (80, 110, 80, 110),
+    "walk 1": (0, 116, 80, 104),
+    "walk 2": (80, 116, 80, 104),
     "climb 1": (400, 0, 80, 110),
     "climb 2": (480, 0, 80, 110),
+    "jumping": (80, 0, 80, 110),
+    "falling": (560, 0, 80, 110),
     "punch 1": (160, 110, 80, 110),
     "punch 2": (240, 110, 80, 110),
 }
@@ -75,7 +77,9 @@ class Player(pygame.sprite.Sprite):
         if self.player_shrunk:
             image = pygame.transform.scale(image, (30, 30))
         if self.rect is not None:
+            midbot = self.rect.midbottom
             self.rect.size = image.get_size()
+            self.rect.midbottom = midbot
         self.image = image
 
     def animate(self, frame1, frame2, frame_time, flip=False):
@@ -207,6 +211,18 @@ class Player(pygame.sprite.Sprite):
             if 'b' in blockers and last.top >= cell.bottom and new.top < cell.bottom:
                 new.top = cell.bottom
                 self.dy = 0
+
+        if not self.resting:
+            if self.dy < 0:
+                if self.direction > 0:
+                    self.set_image("jumping")
+                else:
+                    self.set_image("jumping", flip=True)
+            else:
+                if self.direction > 0:
+                    self.set_image("falling")
+                else:
+                    self.set_image("falling", flip=True)
 
         for cell in game.tilemap.layers['triggers'].collide(new, 'lava'):
             self.hurt()
