@@ -21,6 +21,7 @@ class Enemy(pygame.sprite.Sprite):
         # movement in the X direction; positive is right, negative is left
         self.direction = 1
         self.animate_time = 0
+        self.dead =False
 
     def update(self, dt, game):
         self.animate_time += dt
@@ -65,6 +66,7 @@ class Enemy(pygame.sprite.Sprite):
         #     image = pygame.transform.scale(image, (30, 30))
         # if self.rect is not None:
         #     self.rect.size = image.get_size()
+        #
         self.image = image
 
     def animate(self, frame1, frame2, frame_time, flip=False):

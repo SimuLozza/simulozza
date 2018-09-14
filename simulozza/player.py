@@ -11,8 +11,11 @@ image_location = {
     "walk 2": (80, 110, 80, 110),
     "climb 1": (415, 0, 80, 110),
     "climb 2": (480, 0, 80, 110),
+    "jumping": (80, 0, 80, 110),
+    "falling": (560, 0, 80, 110),
     "punch 1": (160, 110, 80, 110),
     "punch 2": (240, 110, 80, 110),
+    "dead": (340, 0, 80, 110),
 }
 
 class Player(pygame.sprite.Sprite):
@@ -75,7 +78,9 @@ class Player(pygame.sprite.Sprite):
         if self.player_shrunk:
             image = pygame.transform.scale(image, (30, 30))
         if self.rect is not None:
+            midbot = self.rect.midbottom
             self.rect.size = image.get_size()
+            self.rect.midbottom = midbot
         self.image = image
 
     def animate(self, frame1, frame2, frame_time, flip=False):
@@ -173,6 +178,12 @@ class Player(pygame.sprite.Sprite):
             # add gravity on to the currect vertical speed
             self.dy = min(400, self.dy + 40)
 
+        if self.punch_cooldown > 0:
+            if self.direction > 0:
+                self.set_image("punch 1")
+            else:
+                self.set_image("punch 1", flip=True)
+
         # now add the distance travelled for this update to the player position
         self.rect.y += self.dy * dt
 
@@ -208,6 +219,18 @@ class Player(pygame.sprite.Sprite):
                 new.top = cell.bottom
                 self.dy = 0
 
+        if not self.resting:
+            if self.dy < 0:
+                if self.direction > 0:
+                    self.set_image("jumping")
+                else:
+                    self.set_image("jumping", flip=True)
+            else:
+                if self.direction > 0:
+                    self.set_image("falling")
+                else:
+                    self.set_image("falling", flip=True)
+
         for cell in game.tilemap.layers['triggers'].collide(new, 'lava'):
             self.hurt()
 
@@ -227,6 +250,9 @@ class Player(pygame.sprite.Sprite):
 
         for cell in game.tilemap.layers['triggers'].collide(new, 'expand'):
             self.player_shrunk = False
+
+        if self.is_dead:
+            self.set_image("dead")
 
         # this reassignment of the image rect must be here at the bottom
         self.rect.midbottom = new.midbottom
@@ -248,7 +274,7 @@ class Player(pygame.sprite.Sprite):
 
     def punch(self, game):
         # ADD ANIMATION
-        self.animate("punch 1", "punch 2", 2)
+
         # create a bullet at an appropriate position (the side of the player
         # sprite) and travelling in the correct direction
         if self.direction > 0:
@@ -256,6 +282,6 @@ class Player(pygame.sprite.Sprite):
         else:
             Punch(self.rect.midleft, -1, game.sprites)
         # set the amount of time until the player can shoot again
-        self.punch_cooldown = 1
-        game.throw.play()
+        self.punch_cooldown = 0.5
+        game.punch.play()
 

@@ -45,9 +45,8 @@ class Punch(pygame.sprite.Sprite):
         # movement in the X direction; positive is right, negative is left;
         # supplied by the player (shooter)
         self.direction = direction
-        #self.direction = direction
         # time this bullet will live for in seconds
-        self.lifespan = 2
+        self.lifespan = 0.5
 
     def update(self, dt, game):
         # decrement the lifespan of the bullet by the amount of time passed and
@@ -64,8 +63,9 @@ class Punch(pygame.sprite.Sprite):
         # if collided" flag as True so any collided enemies are removed from the
         # game
         if pygame.sprite.spritecollide(self, game.enemies, True):
-            image = pygame.image.load(data_file('enemy.png'))
-            game.punch.play()
+
+            game.throw.play()
+            game.enemies.dead = True
             # we also remove the bullet from the game or it will continue on
             # until its lifespan expires
             self.kill()
