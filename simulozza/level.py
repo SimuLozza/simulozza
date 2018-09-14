@@ -58,7 +58,9 @@ class Level(object):
         self.shoot = pygame.mixer.Sound(data_file('shoot.wav'))
         self.explosion = pygame.mixer.Sound(data_file('explosion.wav'))
         self.punch = pygame.mixer.Sound(data_file('punch.wav'))
+        self.hit = pygame.mixer.Sound(data_file('is_that_all.wav'))
         self.throw = pygame.mixer.Sound(data_file('die_mother_fucker.wav'))
+        #self.hurt = pygame.mixer.Sound(data_file('.wav'))
 
         self.level_complete = False
 

@@ -47,6 +47,7 @@ class Player(pygame.sprite.Sprite):
         self.hurt_cooldown = 0
 
     def hurt(self):
+        #game.hurt.play()
         if self.hurt_cooldown > 0:
             return
         self.lives -= 1
@@ -173,6 +174,12 @@ class Player(pygame.sprite.Sprite):
             # add gravity on to the currect vertical speed
             self.dy = min(400, self.dy + 40)
 
+        if self.punch_cooldown > 0:
+            if self.direction > 0:
+                self.set_image("punch 1")
+            else:
+                self.set_image("punch 1", flip=True)
+
         # now add the distance travelled for this update to the player position
         self.rect.y += self.dy * dt
 
@@ -248,7 +255,7 @@ class Player(pygame.sprite.Sprite):
 
     def punch(self, game):
         # ADD ANIMATION
-        self.animate("punch 1", "punch 2", 2)
+
         # create a bullet at an appropriate position (the side of the player
         # sprite) and travelling in the correct direction
         if self.direction > 0:
@@ -256,6 +263,6 @@ class Player(pygame.sprite.Sprite):
         else:
             Punch(self.rect.midleft, -1, game.sprites)
         # set the amount of time until the player can shoot again
-        self.punch_cooldown = 1
-        game.throw.play()
+        self.punch_cooldown = 0.5
+        game.punch.play()
 

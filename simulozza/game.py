@@ -9,7 +9,7 @@ class Menu(object):
     running = True
 
     def rungame(self):
-        level_list = ['level-enemy.tmx','level-01.tmx', 'level-02.tmx', 'level-03.tmx']
+        level_list = ['level-enemy.tmx', 'level1-2.tmx']
         for i in level_list:
             succeeded = Level(self.screen, data_file(i), data_file('background.png')).run()
             if succeeded == False:
