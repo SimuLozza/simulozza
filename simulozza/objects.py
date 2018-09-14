@@ -4,7 +4,7 @@ from simulozza.data_file import data_file
 
 
 class Bullet(pygame.sprite.Sprite):
-    image = pygame.image.load(data_file('bullet.png'))
+    image = pygame.image.load(data_file('swear.png'))
 
     def __init__(self, location, direction, *groups):
         super().__init__(*groups)
@@ -34,3 +34,14 @@ class Bullet(pygame.sprite.Sprite):
             # we also remove the bullet from the game or it will continue on
             # until its lifespan expires
             self.kill()
+
+
+class Gun(pygame.sprite.Sprite):
+    image = pygame.image.load(data_file('gun-cropped.png'))
+
+    def __init__(self, location, direction, *groups):
+        super().__init__(*groups)
+        self.rect = pygame.rect.Rect(location, self.image.get_size())
+        # movement in the X direction; positive is right, negative is left;
+        # supplied by the player (shooter)
+        self.direction = direction
