@@ -98,7 +98,6 @@ class Level(object):
             if self.player.is_dead:
                 x, y = self.screen.get_size()
                 text_to_screen(self.screen, 'You Died!', x//2, y//2, align='center')
-                return False
 
             if self.tilemap.layers['triggers'].collide(self.player.collide_rect, 'exit'):
                 self.level_complete = True

@@ -13,6 +13,7 @@ image_location = {
     "climb 2": (480, 0, 80, 110),
     "punch 1": (160, 110, 80, 110),
     "punch 2": (240, 110, 80, 110),
+    "dead": (340, 0, 80, 110),
 }
 
 class Player(pygame.sprite.Sprite):
@@ -227,6 +228,9 @@ class Player(pygame.sprite.Sprite):
 
         for cell in game.tilemap.layers['triggers'].collide(new, 'expand'):
             self.player_shrunk = False
+
+        if self.is_dead:
+            self.set_image("dead")
 
         # this reassignment of the image rect must be here at the bottom
         self.rect.midbottom = new.midbottom
