@@ -36,8 +36,8 @@ class Bullet(pygame.sprite.Sprite):
             self.kill()
 
 
-class Gun(pygame.sprite.Sprite):
-    image = pygame.image.load(data_file('gun-cropped.png'))
+class Punch(pygame.sprite.Sprite):
+    image = pygame.image.load(data_file('transparent.png'))
 
     def __init__(self, location, direction, *groups):
         super().__init__(*groups)
@@ -45,3 +45,28 @@ class Gun(pygame.sprite.Sprite):
         # movement in the X direction; positive is right, negative is left;
         # supplied by the player (shooter)
         self.direction = direction
+        #self.direction = direction
+        # time this bullet will live for in seconds
+        self.lifespan = 2
+
+    def update(self, dt, game):
+        # decrement the lifespan of the bullet by the amount of time passed and
+        # remove it from the game if its time runs out
+        self.lifespan -= dt
+        if self.lifespan < 0:
+            self.kill()
+            return
+
+        # move the enemy by 400 pixels per second in the movement direction
+        #self.rect.x += self.direction * 400 * dt
+
+        # check for collision with any of the enemy sprites; we pass the "kill
+        # if collided" flag as True so any collided enemies are removed from the
+        # game
+        if pygame.sprite.spritecollide(self, game.enemies, True):
+            image = pygame.image.load(data_file('enemy.png'))
+            game.punch.play()
+            # we also remove the bullet from the game or it will continue on
+            # until its lifespan expires
+            self.kill()
+>>>>>>> 05520480ef5c463309dfc877f5c677cdaa14addb
