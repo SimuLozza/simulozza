@@ -2,16 +2,15 @@ import pygame
 import kezmenu
 
 from simulozza.level import Level
-from simulozza.data_file import data_file
+from simulozza.data_file import data_file, level_names
 
 
 class Menu(object):
     running = True
 
     def rungame(self):
-        level_list = ['level1-1.tmx', 'level1-2.tmx', 'level1-3.tmx', 'level1-4.tmx', 'level2-1.tmx']
-        for i in level_list:
-            succeeded = Level(self.screen, data_file(i), data_file('background.png')).run()
+        for level in level_names():
+            succeeded = Level(self.screen, data_file(level), data_file('background.png')).run()
             if succeeded == False:
                 return
         return
@@ -19,18 +18,19 @@ class Menu(object):
     def main(self, screen):
         clock = pygame.time.Clock()
         self.screen = screen
-        background = pygame.image.load(data_file('background.png'))
         menu = kezmenu.KezMenu(
             ['Play!', self.rungame],
             ['Quit', lambda: setattr(self, 'running', False)],
         )
-        menu.x = 200
-        menu.y = 100
+        menu.x = 400
+        menu.y = 300
         menu.enableEffect('raise-col-padding-on-focus', enlarge_time=0.1)
+        menu.font = pygame.font.Font(data_file('VT220-mod.ttf'), 50)
+        menu.color = (200, 200, 200)
 
         while self.running:
             menu.update(pygame.event.get(), clock.tick(30)/1000.)
-            screen.blit(background, (0, 0))
+            screen.fill((0, 0, 0))
             menu.draw(screen)
             pygame.display.flip()
 
